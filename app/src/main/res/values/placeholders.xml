@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="placeholder_location">Hamburg</string>
+    <string name="placeholder_profile_name">Nishkarsh Sharma</string>
+    <string name="placeholder_profile_image">Default Profile Image</string>
+</resources>

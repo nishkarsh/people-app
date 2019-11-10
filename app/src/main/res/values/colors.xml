@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">@color/sparkBrandColor</color>
+    <color name="colorPrimaryDark">@color/deepOceanBlue</color>
+    <color name="colorAccent">@color/red</color>
+
+    <color name="sparkBrandColor">@color/oceanBlue</color>
+    <color name="deepOceanBlue">#017ea7</color>
+    <color name="oceanBlue">#00A5DB</color>
+    <color name="offWhite">#fcfcfc</color>
+    <color name="red">#cf324d</color>
+
+    <color name="black_30percent_opacity">#4D000000</color>
+    <color name="black_80percent_opacity">#CC000000</color>
+
+    <color name="white_70percent_opacity">#B3ffffff</color>
 </resources>

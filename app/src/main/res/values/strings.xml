@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">People</string>
-    <string name="url">www.intentfilter.com</string>
+    <string name="profile_image">Your Profile Image</string>
 </resources>
