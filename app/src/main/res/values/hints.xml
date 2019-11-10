@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hint_display_name">Choose a display name</string>
+    <string name="hint_real_name">Please enter your actual full name</string>
+    <string name="hint_birthday">When were you born?</string>
+    <string name="hint_gender">Select Gender</string>
+    <string name="hint_ethnicity">Select Ethnicity</string>
+    <string name="hint_religion">Select Religion</string>
+    <string name="hint_figure">Select your figure type</string>
+    <string name="hint_occupation">Specify your occupation</string>
+    <string name="hint_about_me">Tell something about yourself</string>
+    <string name="hint_location">Specify your location</string>
+    <string name="hint_marital_status">Specify your marital status</string>
+</resources>
