@@ -17,50 +17,13 @@
             app:collapsedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleGravity="bottom"
-            app:expandedTitleMarginStart="15dp"
-            app:expandedTitleMarginTop="15dp"
+            app:expandedTitleMarginStart="@dimen/standard_margin"
+            app:expandedTitleMarginTop="@dimen/standard_margin"
             app:expandedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             tools:title="@string/placeholder_profile_name">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/placeholder_profile_image"
-                    android:src="@drawable/ic_profile" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/profile_image"
-                    android:minHeight="@dimen/profile_picture_min_height"
-                    android:scaleType="fitCenter" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/light_to_dark_gradient" />
-
-                <TextView
-                    android:id="@+id/rating_unavailable_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/white_70percent_opacity"
-                    android:textSize="@dimen/font_size_small"
-                    tools:text="@string/placeholder_location" />
-
-            </FrameLayout>
+            <include layout="@layout/layout_profile_top_section" />
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -78,11 +41,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <include layout="@layout/layout_profile_main_section" />
 
     </androidx.core.widget.NestedScrollView>
 

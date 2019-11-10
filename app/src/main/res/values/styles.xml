@@ -4,11 +4,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/font_size_normal</item>
     </style>
 
     <style name="PeopleTheme.ScreenTitle">
         <item name="android:textColor">@color/offWhite</item>
         <item name="android:textSize">@dimen/font_size_medium</item>
+    </style>
+
+    <style name="PeopleTheme.SectionTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black_35percent_opacity</item>
+    </style>
+
+    <style name="PeopleTheme.Label">
+        <item name="android:textColor">@color/black_35percent_opacity</item>
+        <item name="android:textSize">@dimen/font_size_normal</item>
     </style>
 
 </resources>

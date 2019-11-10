@@ -3,4 +3,5 @@
     <string name="placeholder_location">Hamburg</string>
     <string name="placeholder_profile_name">Nishkarsh Sharma</string>
     <string name="placeholder_profile_image">Default Profile Image</string>
+    <string name="placeholder_about_me">I am a friendly person who likes to spend most of his time thinking about Life. I like to try new things and I believe that if we have been given only one life, we certainly don\'t have to live it like only one.</string>
 </resources>

@@ -8,4 +8,5 @@
     <dimen name="font_size_largest">24sp</dimen>
 
     <dimen name="profile_picture_min_height">300dp</dimen>
+    <dimen name="standard_margin">16dp</dimen>
 </resources>
