@@ -1,5 +1,9 @@
 package com.intentfilter.people.models
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
-class NamedAttribute(private val id: UUID, private val name: String)
+class NamedAttribute(
+    @JsonProperty("id") val id: UUID,
+    @JsonProperty("name") val name: String
+)
