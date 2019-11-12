@@ -11,6 +11,7 @@
         android:padding="@dimen/standard_margin">
 
         <ImageView
+            android:id="@+id/profilePicture"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
@@ -71,7 +72,7 @@
                 android:id="@+id/viewGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/hint_gender"
                 android:inputType="none" />
 
@@ -103,7 +104,7 @@
                 android:id="@+id/viewEthnicity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/hint_ethnicity"
                 android:inputType="none" />
 
@@ -118,7 +119,7 @@
                 android:id="@+id/viewReligion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/hint_religion"
                 android:inputType="none" />
 
@@ -146,7 +147,7 @@
                 android:id="@+id/viewFigureType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/hint_figure"
                 android:inputType="none" />
 
@@ -161,7 +162,7 @@
                 android:id="@+id/viewMaritalStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/hint_marital_status"
                 android:inputType="none" />
 

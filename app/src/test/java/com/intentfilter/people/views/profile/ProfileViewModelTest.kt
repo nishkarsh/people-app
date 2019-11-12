@@ -52,6 +52,56 @@ internal class ProfileViewModelTest {
         }
     }
 
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetGenderOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+
+        viewModel.choiceAttributes.observeForever {
+            assertThat(viewModel.getGenderOptions(), `is`(attributes.gender))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetEthnicityOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+
+        viewModel.choiceAttributes.observeForever {
+            assertThat(viewModel.getEthnicityOptions(), `is`(attributes.ethnicity))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetFigureTypeOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+
+        viewModel.choiceAttributes.observeForever {
+            assertThat(viewModel.getFigureTypeOptions(), `is`(attributes.figure))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetReligionOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+
+        viewModel.choiceAttributes.observeForever {
+            assertThat(viewModel.getReligionOptions(), `is`(attributes.religion))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetMaritalStatusOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+
+        viewModel.choiceAttributes.observeForever {
+            assertThat(viewModel.getMaritalStatusOptions(), `is`(attributes.maritalStatus))
+        }
+    }
+
     @AfterEach
     @ExperimentalCoroutinesApi
     internal fun tearDown() {

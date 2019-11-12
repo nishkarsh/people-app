@@ -65,6 +65,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     kapt 'com.jakewharton:butterknife-compiler:10.2.0'
 
+    implementation 'org.parceler:parceler-api:1.1.12'
+    kapt 'org.parceler:parceler:1.1.12'
+
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
     // Dependencies for testing

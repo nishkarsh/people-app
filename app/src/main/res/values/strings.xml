@@ -5,4 +5,9 @@
     <string name="hint_height">Specify your height (in metre)</string>
     <string name="action_save">Save</string>
     <string name="action_create">Create</string>
+
+    <string name="title_gender">Select your gender</string>
+    <string name="title_ethnicity">Select your Ethnicity</string>
+    <string name="title_figure_type">Choose your figure type</string>
+    <string name="title_marital_status">Choose marital status</string>
 </resources>
