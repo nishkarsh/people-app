@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
+import com.intentfilter.people.utilities.Logger
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ProfileViewModelFactory
+
+    private val logger = Logger.loggerFor(EditProfileFragment::class)
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, state: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_profile, parent, false)
@@ -26,7 +29,7 @@ class EditProfileFragment : Fragment() {
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
         viewModel.choiceAttributes.observe(viewLifecycleOwner, Observer {
-            //TODO Set various single choice attributes through adapters to the views
+            logger.d("Got choice attributes from service, initializing inputs")
         })
     }
 }
