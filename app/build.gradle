@@ -57,6 +57,7 @@ dependencies {
 
     kapt 'com.google.dagger:dagger-compiler:2.23.2'
     implementation 'com.google.dagger:dagger:2.25.2'
+    implementation "javax.annotation:javax.annotation-api:1.2"
 
     // Dependencies for testing
     testImplementation "androidx.arch.core:core-testing:2.1.0"
