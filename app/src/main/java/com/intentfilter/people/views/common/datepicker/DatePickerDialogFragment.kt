@@ -18,8 +18,7 @@ class DatePickerDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetLis
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        viewModel =
-            ViewModelProvider(parentFragment as ViewModelStoreOwner).get(DatePickerViewModel::class.java)
+        viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(DatePickerViewModel::class.java)
 
         return DatePickerDialog(context!!, this, year, month, day)
     }

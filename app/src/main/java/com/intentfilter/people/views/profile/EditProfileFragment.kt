@@ -14,11 +14,11 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
+import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.Companion.TAG
 import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
-import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment(), ViewModelStoreOwner {
@@ -50,7 +50,7 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         val viewModel = ViewModelProvider(this).get(DatePickerViewModel::class.java)
 
         viewModel.selectedDate.observe(this, Observer {
-            view.setText(it.format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")))
+            view.setText(DateUtil.format(it))
         })
 
         DatePickerDialogFragment.newInstance().show(childFragmentManager, TAG)
