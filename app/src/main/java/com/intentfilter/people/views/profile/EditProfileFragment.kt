@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,8 @@ import com.intentfilter.people.R
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.Companion.TAG
+import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
+import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment(), ViewModelStoreOwner {
@@ -26,9 +29,9 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     private val logger = Logger.loggerFor(EditProfileFragment::class)
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, state: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_edit_profile, parent, false).apply {
-            ButterKnife.bind(this@EditProfileFragment, this)
-        }
+        val view = inflater.inflate(R.layout.fragment_edit_profile, parent, false)
+        unbinder = ButterKnife.bind(this, view)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -42,8 +45,14 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         })
     }
 
-    @OnClick(R.id.view_birthday)
-    fun displayDatePicker() {
+    @OnClick(R.id.viewBirthday)
+    fun displayDatePicker(view: EditText) {
+        val viewModel = ViewModelProvider(this).get(DatePickerViewModel::class.java)
+
+        viewModel.selectedDate.observe(this, Observer {
+            view.setText(it.format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")))
+        })
+
         DatePickerDialogFragment.newInstance().show(childFragmentManager, TAG)
     }
 
