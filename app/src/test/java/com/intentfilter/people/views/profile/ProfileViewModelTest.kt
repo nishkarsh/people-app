@@ -31,7 +31,7 @@ internal class ProfileViewModelTest {
     @Mock
     lateinit var attributeService: AttributeService
 
-    lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: ProfileViewModel
 
     @BeforeEach
     @ExperimentalCoroutinesApi
