@@ -1,5 +1,6 @@
 package com.intentfilter.people.views.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,13 @@ import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
 import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
+import com.intentfilter.people.views.common.CircleTransform
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.Companion.TAG
 import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
 import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserFragment
 import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import javax.inject.Inject
 
@@ -56,6 +59,15 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         })
     }
 
+    @OnClick(R.id.profilePicture)
+    fun displayFileChooser() {
+        val chooseImageIntent = Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
+        }
+
+        startActivityForResult(chooseImageIntent, 0)
+    }
+
     @OnClick(R.id.viewBirthday)
     fun displayDatePicker() {
         DatePickerDialogFragment.newInstance().show(childFragmentManager, TAG)
@@ -86,6 +98,22 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         displayChooser(view, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        logger.d(String.format("Received activity result for request code: %s", requestCode))
+
+        profileViewModel.setProfilePicture(data?.data)
+        data?.let {
+            Picasso.with(context).load(data.data)
+                .transform(CircleTransform())
+                .into(profilePicture)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder.unbind()
+    }
+
     private fun displayChooser(view: EditText, options: Array<NamedAttribute>, @StringRes titleId: Int) {
         // TODO Handle configuration change while reusing the same code
         val chooserFragment = SingleAttributeChooserFragment.newInstance(options, getString(titleId))
@@ -102,10 +130,5 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         birthdayChooserViewModel.selectedDate.observe(viewLifecycleOwner, Observer {
             viewBirthday.setText(DateUtil.format(it))
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder.unbind()
     }
 }
