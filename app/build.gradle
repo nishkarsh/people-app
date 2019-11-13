@@ -30,6 +30,7 @@ android {
         Dev {
             dimension "environment"
             buildConfigField("String", "ATTRIBUTE_SERVICE_BASE_URL", '"http://10.0.2.2:8080/"')
+            buildConfigField("String", "LOCATION_SERVICE_BASE_URL", '"http://10.0.2.2:8080/"')
         }
     }
     testOptions {

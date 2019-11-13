@@ -2,8 +2,10 @@ package com.intentfilter.people.views.profile
 
 import android.net.Uri
 import com.intentfilter.people.extensions.InstantExecutorExtension
+import com.intentfilter.people.models.Locations
 import com.intentfilter.people.models.SingleChoiceAttributes
 import com.intentfilter.people.services.AttributeService
+import com.intentfilter.people.services.LocationService
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
@@ -32,6 +34,8 @@ import org.mockito.junit.jupiter.MockitoExtension
 internal class ProfileViewModelTest {
     @Mock
     lateinit var attributeService: AttributeService
+    @Mock
+    lateinit var locationService: LocationService
 
     private lateinit var viewModel: ProfileViewModel
 
@@ -41,7 +45,7 @@ internal class ProfileViewModelTest {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        viewModel = ProfileViewModel(attributeService, testCoroutineDispatcher)
+        viewModel = ProfileViewModel(attributeService, locationService, testCoroutineDispatcher)
     }
 
     @Test
@@ -51,6 +55,16 @@ internal class ProfileViewModelTest {
 
         viewModel.choiceAttributes.observeForever {
             assertThat(it, `is`(attributes))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetLocations(@Random locations: Locations) = runBlockingTest {
+        whenever(locationService.getLocations()).thenReturn(locations)
+
+        viewModel.locations.observeForever {
+            assertThat(it, `is`(locations))
         }
     }
 

@@ -5,21 +5,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.intentfilter.people.models.Locations
 import com.intentfilter.people.models.NamedAttribute
 import com.intentfilter.people.models.SingleChoiceAttributes
 import com.intentfilter.people.services.AttributeService
+import com.intentfilter.people.services.LocationService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    private val service: AttributeService, networkCoroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val attributeService: AttributeService, private val locationService: LocationService,
+    networkCoroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     var profilePicture = MutableLiveData<Uri>()
 
     val choiceAttributes: LiveData<SingleChoiceAttributes> = liveData(networkCoroutineDispatcher) {
-        emit(service.getAttributes())
+        emit(attributeService.getAttributes())
+    }
+
+    val locations: LiveData<Locations> = liveData(networkCoroutineDispatcher) {
+        emit(locationService.getLocations())
     }
 
     fun getGenderOptions(): Array<NamedAttribute> {

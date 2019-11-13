@@ -57,6 +57,9 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         profileViewModel.choiceAttributes.observe(viewLifecycleOwner, Observer {
             logger.d("Got choice attributes from service, initializing inputs")
         })
+        profileViewModel.locations.observe(viewLifecycleOwner, Observer {
+            logger.d("Got locations from service, initializing autocomplete")
+        })
         attachProfilePictureObserver()
     }
 

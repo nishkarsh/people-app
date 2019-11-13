@@ -3,6 +3,7 @@ package com.intentfilter.people.providers
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.intentfilter.people.gateways.AttributeServiceGateway
+import com.intentfilter.people.gateways.LocationServiceGateway
 import io.github.glytching.junit.extension.random.RandomBeansExtension
 import okhttp3.OkHttpClient
 import org.hamcrest.core.Is.`is`
@@ -30,6 +31,15 @@ internal class GatewayModuleTest {
         val providedGateway = gatewayModule.provideAttributeServiceGateway(okHttpClient, mapper)
 
         assertThat(providedGateway, `is`(instanceOf(AttributeServiceGateway::class.java)))
+    }
+
+    @Test
+    internal fun shouldProvideLocationServiceGateway(@Mock okHttpClient: OkHttpClient) {
+        val mapper = gatewayModule.provideObjectMapper()
+
+        val providedGateway = gatewayModule.provideLocationServiceGateway(okHttpClient, mapper)
+
+        assertThat(providedGateway, `is`(instanceOf(LocationServiceGateway::class.java)))
     }
 
     @Test
