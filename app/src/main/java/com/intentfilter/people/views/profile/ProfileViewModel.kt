@@ -43,6 +43,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun setProfilePicture(imageUri: Uri?) {
-        imageUri?.let { this.profilePicture.postValue(imageUri) }
+        imageUri?.let { profilePicture.postValue(imageUri) }
     }
 }

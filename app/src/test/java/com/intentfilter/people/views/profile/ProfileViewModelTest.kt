@@ -1,5 +1,6 @@
 package com.intentfilter.people.views.profile
 
+import android.net.Uri
 import com.intentfilter.people.extensions.InstantExecutorExtension
 import com.intentfilter.people.models.SingleChoiceAttributes
 import com.intentfilter.people.services.AttributeService
@@ -15,6 +16,7 @@ import kotlinx.coroutines.test.setMain
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.junit.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -100,6 +102,22 @@ internal class ProfileViewModelTest {
         viewModel.choiceAttributes.observeForever {
             assertThat(viewModel.getMaritalStatusOptions(), `is`(attributes.maritalStatus))
         }
+    }
+
+    @Test
+    internal fun shouldSetProfilePictureWhenUriNotNull(@Mock uri: Uri) {
+        viewModel.setProfilePicture(uri)
+
+        assertThat(viewModel.profilePicture.value, `is`(uri))
+    }
+
+    @Test
+    internal fun shouldNotSetProfilePictureWhenUriNull(@Mock uri: Uri) {
+        viewModel.setProfilePicture(uri)
+
+        viewModel.setProfilePicture(null)
+
+        assertNotNull(viewModel.profilePicture.value)
     }
 
     @AfterEach

@@ -36,6 +36,11 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
+
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
