@@ -57,6 +57,7 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         profileViewModel.choiceAttributes.observe(viewLifecycleOwner, Observer {
             logger.d("Got choice attributes from service, initializing inputs")
         })
+        attachProfilePictureObserver()
     }
 
     @OnClick(R.id.profilePicture)
@@ -102,11 +103,6 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         logger.d(String.format("Received activity result for request code: %s", requestCode))
 
         profileViewModel.setProfilePicture(data?.data)
-        data?.let {
-            Picasso.with(context).load(data.data)
-                .transform(CircleTransform())
-                .into(profilePicture)
-        }
     }
 
     override fun onDestroyView() {
@@ -122,6 +118,12 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         val chooserViewModel = ViewModelProvider(chooserFragment).get(SingleAttributeChooserViewModel::class.java)
         chooserViewModel.selectedAttribute.observeOnce(viewLifecycleOwner, Observer {
             view.setText(it.name)
+        })
+    }
+
+    private fun attachProfilePictureObserver() {
+        profileViewModel.profilePicture.observe(viewLifecycleOwner, Observer {
+            Picasso.with(context).load(it).transform(CircleTransform()).into(profilePicture)
         })
     }
 

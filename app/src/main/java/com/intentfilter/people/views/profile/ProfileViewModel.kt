@@ -2,6 +2,7 @@ package com.intentfilter.people.views.profile
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.intentfilter.people.models.NamedAttribute
@@ -15,7 +16,7 @@ class ProfileViewModel @Inject constructor(
     private val service: AttributeService, networkCoroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private var profilePicture: Uri? = null
+    var profilePicture = MutableLiveData<Uri>()
 
     val choiceAttributes: LiveData<SingleChoiceAttributes> = liveData(networkCoroutineDispatcher) {
         emit(service.getAttributes())
@@ -42,6 +43,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun setProfilePicture(imageUri: Uri?) {
-        this.profilePicture = imageUri
+        imageUri?.let { this.profilePicture.postValue(imageUri) }
     }
 }
