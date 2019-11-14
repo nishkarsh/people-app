@@ -76,34 +76,34 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         startActivityForResult(chooseImageIntent, 0)
     }
 
-    @OnClick(R.id.viewBirthday)
+    @OnClick(value = [R.id.viewBirthday, R.id.viewBirthdayWrapper])
     fun displayDatePicker() {
         DatePickerDialogFragment.newInstance().show(childFragmentManager, TAG)
     }
 
-    @OnClick(R.id.viewGender)
-    fun displayGenderOptions(view: EditText) {
-        displayChooser(view, profileViewModel.getGenderOptions(), R.string.title_gender)
+    @OnClick(value = [R.id.viewGender, R.id.viewGenderWrapper])
+    fun displayGenderOptions() {
+        displayChooser(viewGender, profileViewModel.getGenderOptions(), R.string.title_gender)
     }
 
-    @OnClick(R.id.viewEthnicity)
-    fun displayEthnicityOptions(view: EditText) {
-        displayChooser(view, profileViewModel.getEthnicityOptions(), R.string.title_ethnicity)
+    @OnClick(value = [R.id.viewEthnicity, R.id.viewEthnicityWrapper])
+    fun displayEthnicityOptions() {
+        displayChooser(viewEthnicity, profileViewModel.getEthnicityOptions(), R.string.title_ethnicity)
     }
 
-    @OnClick(R.id.viewFigureType)
-    fun displayFigureOptions(view: EditText) {
-        displayChooser(view, profileViewModel.getFigureTypeOptions(), R.string.title_figure_type)
+    @OnClick(value = [R.id.viewFigureType, R.id.viewFigureTypeWrapper])
+    fun displayFigureOptions() {
+        displayChooser(viewFigureType, profileViewModel.getFigureTypeOptions(), R.string.title_figure_type)
     }
 
-    @OnClick(R.id.viewReligion)
-    fun displayReligionOptions(view: EditText) {
-        displayChooser(view, profileViewModel.getReligionOptions(), R.string.title_figure_type)
+    @OnClick(value = [R.id.viewReligion, R.id.viewReligionWrapper])
+    fun displayReligionOptions() {
+        displayChooser(viewReligion, profileViewModel.getReligionOptions(), R.string.title_figure_type)
     }
 
-    @OnClick(R.id.viewMaritalStatus)
-    fun displayMaritalStatusOptions(view: EditText) {
-        displayChooser(view, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
+    @OnClick(value = [R.id.viewMaritalStatus, R.id.viewMaritalStatusWrapper])
+    fun displayMaritalStatusOptions() {
+        displayChooser(viewMaritalStatus, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

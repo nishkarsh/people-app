@@ -49,6 +49,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewBirthdayWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
@@ -64,6 +65,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewGenderWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
@@ -90,12 +92,13 @@
                 android:completionThreshold="2"
                 android:hint="@string/hint_location"
                 android:imeOptions="actionDone"
-                android:inputType="textNoSuggestions|textCapWords"
+                android:inputType="textAutoComplete"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewEthnicityWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
@@ -111,6 +114,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewReligionWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
@@ -139,6 +143,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewFigureTypeWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
@@ -154,6 +159,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/viewMaritalStatusWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
