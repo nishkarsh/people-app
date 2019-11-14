@@ -53,13 +53,17 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
 
         DaggerPeopleComponent.create().inject(this)
 
-        profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
-        profileViewModel.choiceAttributes.observe(viewLifecycleOwner, Observer {
-            logger.d("Got choice attributes from service, initializing inputs")
-        })
-        profileViewModel.locations.observe(viewLifecycleOwner, Observer {
-            logger.d("Got locations from service, initializing autocomplete")
-        })
+        profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java).apply {
+            choiceAttributes.observe(viewLifecycleOwner, Observer {
+                logger.d("Got choice attributes from service, initializing inputs")
+            })
+
+            locations.observe(viewLifecycleOwner, Observer {
+                logger.d("Got locations from service, initializing autocomplete")
+
+                viewLocation.setAdapter(LocationsAdapter(context!!, it.cities))
+            })
+        }
         attachProfilePictureObserver()
     }
 
