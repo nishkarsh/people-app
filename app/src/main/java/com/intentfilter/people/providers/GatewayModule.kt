@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.gateways.AttributeServiceGateway
 import com.intentfilter.people.gateways.LocationServiceGateway
+import com.intentfilter.people.gateways.ProfileServiceGateway
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -38,6 +39,18 @@ class GatewayModule {
             .build()
 
         return retrofit.create(LocationServiceGateway::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileServiceGateway(client: OkHttpClient, mapper: ObjectMapper): ProfileServiceGateway {
+        val retrofit = Retrofit.Builder()
+            .addConverterFactory(JacksonConverterFactory.create(mapper))
+            .baseUrl(BuildConfig.PROFILE_SERVICE_BASE_URL)
+            .client(client)
+            .build()
+
+        return retrofit.create(ProfileServiceGateway::class.java)
     }
 
     @Provides

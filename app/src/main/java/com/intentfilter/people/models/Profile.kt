@@ -1,21 +1,21 @@
 package com.intentfilter.people.models
 
-import android.net.Uri
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Profile(
-    var id: String,
-    var displayName: String,
-    var actualFullName: String,
-    var profilePicturePath: Uri,
-    var birthday: String,
-    var genderId: String,
-    var ethnicityId: String,
-    var religionId: String,
-    var height: Double,
-    var figureTypeId: String,
-    var maritalStatusId: String,
-    var occupation: String,
-    var aboutMe: String,
-    var location: City,
-    var version: Long
+    @JsonProperty("id") val id: String,
+    @JsonProperty("displayName") val displayName: String,
+    @JsonProperty("actualFullName") val actualFullName: String,
+    @JsonProperty("profilePicturePath") val profilePicturePath: String,
+    @JsonProperty("birthday") val birthday: String,
+    @JsonProperty("genderId") val genderId: String,
+    @JsonProperty("ethnicityId") val ethnicityId: String,
+    @JsonProperty("religionId") val religionId: String,
+    @JsonProperty("height") val height: Double,
+    @JsonProperty("figureTypeId") val figureTypeId: String,
+    @JsonProperty("maritalStatusId") val maritalStatusId: String,
+    @JsonProperty("occupation") val occupation: String,
+    @JsonProperty("aboutMe") val aboutMe: String,
+    @JsonProperty("location") val location: City,
+    @JsonProperty("version") val version: Long
 )
