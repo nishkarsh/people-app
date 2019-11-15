@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface LocationServiceGateway {
 
-    @GET("en/locations/cities.json")
+    @GET("/en/locations/cities.json")
     suspend fun getLocations(): Locations
 }

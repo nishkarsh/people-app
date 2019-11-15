@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface AttributeServiceGateway {
 
-    @GET("en/single_choice_attributes.json")
+    @GET("/en/single_choice_attributes.json")
     suspend fun getAttributes(): SingleChoiceAttributes
 }
