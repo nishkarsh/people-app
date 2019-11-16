@@ -1,0 +1,34 @@
+{
+  "cities": [
+    {
+      "lat": "56°09'N",
+      "lon": "10°13'E",
+      "city": "Aarhus"
+    },
+    {
+      "lat": "57°09'N",
+      "lon": "2°07'W",
+      "city": "Aberdeen"
+    },
+    {
+      "lat": "5°19'N",
+      "lon": "4°02'W",
+      "city": "Abidjan"
+    },
+    {
+      "lat": "24°28'N",
+      "lon": "54°22'E",
+      "city": "Abu Dhabi"
+    },
+    {
+      "lat": "9°04'N",
+      "lon": "7°29'E",
+      "city": "Abuja"
+    },
+    {
+      "lat": "16°52'N",
+      "lon": "99°53'W",
+      "city": "Acapulco"
+    }
+  ]
+}
