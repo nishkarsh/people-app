@@ -59,7 +59,7 @@ internal class ProfileServiceTest {
     }
 
     @Test
-    internal fun shouldUploadProfilePicture(@Mock file: File, @Random stringUri: String) = runBlocking {
+    internal fun shouldUploadProfilePicture(@Mock file: File) = runBlocking {
         val filePart = createFormData("file", file.name, create(MediaType.parse("image/*"), file))
 
         service.uploadPicture(file)

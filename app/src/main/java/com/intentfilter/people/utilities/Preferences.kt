@@ -2,18 +2,19 @@ package com.intentfilter.people.utilities
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import javax.inject.Inject
 
-class Preferences(private val sharedPreferences: SharedPreferences) {
+open class Preferences @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    fun isProfileCreated(): Boolean {
+    open fun isProfileCreated(): Boolean {
         return !sharedPreferences.getString(PROFILE_ID, null).isNullOrEmpty()
     }
 
-    fun saveProfile(profileId: String) {
+    open fun saveProfile(profileId: String) {
         sharedPreferences.edit { putString(PROFILE_ID, profileId) }
     }
 
-    fun getProfile(): String? {
+    open fun getProfile(): String? {
         return sharedPreferences.getString(PROFILE_ID, null)
     }
 

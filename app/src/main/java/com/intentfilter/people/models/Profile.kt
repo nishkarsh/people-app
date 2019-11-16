@@ -16,6 +16,11 @@ data class Profile(
     @JsonProperty("maritalStatusId") val maritalStatusId: String,
     @JsonProperty("occupation") val occupation: String,
     @JsonProperty("aboutMe") val aboutMe: String,
-    @JsonProperty("location") val location: City,
+    @JsonProperty("location") val location: Coordinates,
     @JsonProperty("version") val version: Long
+)
+
+data class Coordinates(
+    @JsonProperty("latitude") val latitude: String,
+    @JsonProperty("longitude") val longitude: String
 )

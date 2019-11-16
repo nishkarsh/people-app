@@ -1,0 +1,20 @@
+{
+  "id": "5dcefdb4bc4ae21008ddbd32",
+  "displayName": "Nishkarsh",
+  "actualFullName": "Nishkarsh Sharma",
+  "profilePicturePath": "https://i.pinimg.com/originals/2a/c4/cb/2ac4cbfec5d66d3c996c521969199e58.jpg",
+  "birthday": "2000-10-10",
+  "genderId": "4e21c17b-0b4f-42c7-9084-daddbe13bf9f",
+  "ethnicityId": "4e21c17b-0b4f-42c7-9084-daddbe13bf9f",
+  "religionId": "4e21c17b-0b4f-42c7-9084-daddbe13bf9f",
+  "height": 1.25,
+  "figureTypeId": "4e21c17b-0b4f-42c7-9084-daddbe13bf9f",
+  "maritalStatusId": "4e21c17b-0b4f-42c7-9084-daddbe13bf9f",
+  "occupation": "Applications Developer",
+  "aboutMe": "I am a cool person. I mean really. I like to try new things and would do anything at least once for the experiene of it.",
+  "location": {
+    "latitude": "46W",
+    "longitude": "44E"
+  },
+  "version": "2"
+}

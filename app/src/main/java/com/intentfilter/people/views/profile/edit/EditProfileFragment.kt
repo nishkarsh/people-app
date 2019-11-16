@@ -1,4 +1,4 @@
-package com.intentfilter.people.views.profile
+package com.intentfilter.people.views.profile.edit
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +18,7 @@ import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
 import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
+import com.intentfilter.people.providers.SharedPreferencesModule
 import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.views.common.CircleTransform
@@ -26,6 +27,8 @@ import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.
 import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
 import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserFragment
 import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserViewModel
+import com.intentfilter.people.views.profile.ProfileViewModel
+import com.intentfilter.people.views.profile.ProfileViewModelFactory
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import javax.inject.Inject
@@ -51,7 +54,8 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        DaggerPeopleComponent.create().inject(this)
+        DaggerPeopleComponent.builder().sharedPreferencesModule(SharedPreferencesModule(requireContext())).build()
+            .inject(this)
 
         profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java).apply {
             choiceAttributes.observe(viewLifecycleOwner, Observer {
@@ -61,7 +65,7 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
             locations.observe(viewLifecycleOwner, Observer {
                 logger.d("Got locations from service, initializing autocomplete")
 
-                viewLocation.setAdapter(LocationsAdapter(context!!, it.cities))
+                viewLocation.setAdapter(LocationsAdapter(requireContext(), it.cities))
             })
         }
         attachProfilePictureObserver()

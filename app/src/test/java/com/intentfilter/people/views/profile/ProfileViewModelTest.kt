@@ -3,9 +3,13 @@ package com.intentfilter.people.views.profile
 import android.net.Uri
 import com.intentfilter.people.extensions.InstantExecutorExtension
 import com.intentfilter.people.models.Locations
+import com.intentfilter.people.models.Profile
 import com.intentfilter.people.models.SingleChoiceAttributes
 import com.intentfilter.people.services.AttributeService
 import com.intentfilter.people.services.LocationService
+import com.intentfilter.people.services.ProfileService
+import com.intentfilter.people.utilities.Preferences
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
@@ -36,6 +40,10 @@ internal class ProfileViewModelTest {
     lateinit var attributeService: AttributeService
     @Mock
     lateinit var locationService: LocationService
+    @Mock
+    lateinit var profileService: ProfileService
+    @Mock
+    lateinit var preferences: Preferences
 
     private lateinit var viewModel: ProfileViewModel
 
@@ -45,7 +53,8 @@ internal class ProfileViewModelTest {
         val testCoroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        viewModel = ProfileViewModel(attributeService, locationService, testCoroutineDispatcher)
+        viewModel =
+            ProfileViewModel(attributeService, locationService, profileService, preferences, testCoroutineDispatcher)
     }
 
     @Test
@@ -66,6 +75,25 @@ internal class ProfileViewModelTest {
         viewModel.locations.observeForever {
             assertThat(it, `is`(locations))
         }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldGetProfileWhenProfileIdExistInPreferences(@Random profile: Profile) = runBlockingTest {
+        whenever(preferences.getProfile()).thenReturn(profile.id)
+        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+
+        viewModel.profile.observeForever {
+            assertThat(it, `is`(profile))
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun shouldNotAttemptGetProfileWhenProfileIdNotPresentInPreferences() = runBlockingTest {
+        viewModel.profile.value
+
+        verifyNoMoreInteractions(profileService)
     }
 
     @Test

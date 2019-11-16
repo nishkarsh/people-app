@@ -1,4 +1,4 @@
-package com.intentfilter.people.views.profile
+package com.intentfilter.people.views.profile.edit
 
 import android.content.Context
 import android.widget.ArrayAdapter

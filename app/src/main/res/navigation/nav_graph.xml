@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.intentfilter.people.views.profile.ProfileFragment"
+        android:name="com.intentfilter.people.views.profile.detail.ProfileFragment"
         android:label="@string/label_profile_fragment"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.intentfilter.people.views.profile.EditProfileFragment"
+        android:name="com.intentfilter.people.views.profile.edit.EditProfileFragment"
         android:label="@string/label_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
 
