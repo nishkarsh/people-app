@@ -51,12 +51,13 @@ internal class ProfileViewModelTest {
     @Mock
     lateinit var viewableProfileAdapter: ViewableProfileAdapter
 
+    private lateinit var coroutineDispatcher: TestCoroutineDispatcher
     private lateinit var viewModel: ProfileViewModel
 
     @BeforeEach
     @ExperimentalCoroutinesApi
     internal fun setUp() {
-        val coroutineDispatcher = TestCoroutineDispatcher()
+        coroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(coroutineDispatcher)
 
         viewModel = ProfileViewModel(
@@ -66,12 +67,31 @@ internal class ProfileViewModelTest {
 
     @Test
     @ExperimentalCoroutinesApi
+    internal fun shouldFetchDuringInit(
+        @Random attributes: SingleChoiceAttributes, @Random locations: Locations, @Random profile: Profile
+    ) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenReturn(attributes)
+        whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(preferences.getProfile()).thenReturn(profile.id)
+        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+
+        val viewModel = ProfileViewModel(
+            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+        )
+
+        assertThat(viewModel.choiceAttributes.value, `is`(attributes))
+        assertThat(viewModel.locations.value, `is`(locations))
+        assertThat(viewModel.profile.value, `is`(profile))
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
     fun shouldGetChoiceAttributes(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        val fetchedAttributes = viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
-        assertThat(fetchedAttributes, `is`(attributes))
+        assertThat(viewModel.choiceAttributes.value, `is`(attributes))
     }
 
     @Test
@@ -79,9 +99,9 @@ internal class ProfileViewModelTest {
     fun shouldGetLocations(@Random locations: Locations) = runBlockingTest {
         whenever(locationService.getLocations()).thenReturn(locations)
 
-        val fetchedLocations = viewModel.locations.getOrAwaitValue()
+        viewModel.triggerFetch()
 
-        assertThat(fetchedLocations, `is`(locations))
+        assertThat(viewModel.locations.value, `is`(locations))
     }
 
     @Test
@@ -90,9 +110,9 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
-        val fetchedProfile = viewModel.profile.getOrAwaitValue()
+        viewModel.triggerFetch()
 
-        assertThat(fetchedProfile, `is`(profile))
+        assertThat(viewModel.profile.value, `is`(profile))
     }
 
     @Test
@@ -114,9 +134,9 @@ internal class ProfileViewModelTest {
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
         whenever(viewableProfileAdapter.convert(profile, locations, attributes)).thenReturn(viewableProfile)
 
-        val preparedViewableProfile = viewModel.viewableProfile.getOrAwaitValue()
+        viewModel.triggerFetch()
 
-        assertThat(preparedViewableProfile, `is`(viewableProfile))
+        assertThat(viewModel.viewableProfile.getOrAwaitValue(), `is`(viewableProfile))
     }
 
     @Test
@@ -128,11 +148,12 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
+        viewModel.triggerFetch()
+
+        verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
             assertNull(it)
         }
-
-        verifyNoMoreInteractions(viewableProfileAdapter)
     }
 
     @Test
@@ -144,11 +165,12 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
+        viewModel.triggerFetch()
+
+        verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
             assertNull(it)
         }
-
-        verifyNoMoreInteractions(viewableProfileAdapter)
     }
 
     @Test
@@ -159,11 +181,12 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(locationService.getLocations()).thenReturn(locations)
 
+        viewModel.triggerFetch()
+
+        verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
             assertNull(it)
         }
-
-        verifyNoMoreInteractions(viewableProfileAdapter)
     }
 
     @Test
@@ -171,7 +194,7 @@ internal class ProfileViewModelTest {
     fun shouldGetGenderOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
         assertThat(viewModel.getGenderOptions(), `is`(attributes.gender))
     }
@@ -181,7 +204,7 @@ internal class ProfileViewModelTest {
     fun shouldGetEthnicityOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
         assertThat(viewModel.getEthnicityOptions(), `is`(attributes.ethnicity))
     }
@@ -191,7 +214,7 @@ internal class ProfileViewModelTest {
     fun shouldGetFigureTypeOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
         assertThat(viewModel.getFigureTypeOptions(), `is`(attributes.figure))
     }
@@ -201,7 +224,7 @@ internal class ProfileViewModelTest {
     fun shouldGetReligionOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
         assertThat(viewModel.getReligionOptions(), `is`(attributes.religion))
     }
@@ -211,7 +234,7 @@ internal class ProfileViewModelTest {
     fun shouldGetMaritalStatusOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.choiceAttributes.getOrAwaitValue()
+        viewModel.triggerFetch()
 
         assertThat(viewModel.getMaritalStatusOptions(), `is`(attributes.maritalStatus))
     }

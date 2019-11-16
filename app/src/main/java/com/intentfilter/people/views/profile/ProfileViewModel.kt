@@ -1,43 +1,40 @@
 package com.intentfilter.people.views.profile
 
 import android.net.Uri
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.intentfilter.people.adapters.ViewableProfileAdapter
 import com.intentfilter.people.models.*
 import com.intentfilter.people.services.AttributeService
 import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
+import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.utilities.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val attributeService: AttributeService, private val locationService: LocationService,
     private val profileService: ProfileService, private val preferences: Preferences,
-    private val viewableProfileAdapter: ViewableProfileAdapter, networkCoroutineDispatcher: CoroutineDispatcher = IO
+    private val profileAdapter: ViewableProfileAdapter, private val networkCoroutineDispatcher: CoroutineDispatcher = IO
 ) : ViewModel() {
 
-    var profilePicture = MutableLiveData<Uri>()
+    val profilePicture = MutableLiveData<Uri>()
+    val error = MutableLiveData<String>()
+    val locations = MutableLiveData<Locations>()
+    val choiceAttributes = MutableLiveData<SingleChoiceAttributes>()
+    val profile: MutableLiveData<Profile?> = MutableLiveData()
+    val viewableProfile: MediatorLiveData<ViewableProfile> = MediatorLiveData()
 
-    val choiceAttributes: LiveData<SingleChoiceAttributes> = liveData(networkCoroutineDispatcher) {
-        emit(attributeService.getAttributes())
-    }
-
-    val locations: LiveData<Locations> = liveData(networkCoroutineDispatcher) {
-        emit(locationService.getLocations())
-    }
-
-    val profile: LiveData<Profile?> = liveData(networkCoroutineDispatcher) {
-        preferences.getProfile()?.let { profileId ->
-            preferences.saveProfile(profileId)
-            emit(profileService.getProfile(profileId))
-        }
-    }
-
-    var viewableProfile: MediatorLiveData<ViewableProfile> = MediatorLiveData()
+    private val logger = Logger.loggerFor(ProfileViewModel::class)
 
     init {
+        triggerFetch()
+
         viewableProfile.addSource(choiceAttributes) { attributes ->
             toViewableProfile(profile.value, locations.value, attributes)?.let { viewableProfile.postValue(it) }
         }
@@ -46,6 +43,20 @@ class ProfileViewModel @Inject constructor(
         }
         viewableProfile.addSource(profile) { profile ->
             toViewableProfile(profile, locations.value, choiceAttributes.value)?.let { viewableProfile.postValue(it) }
+        }
+    }
+
+    fun triggerFetch() {
+        logger.d("Triggering fetch of profile, locations and choice attributes")
+
+        viewModelScope.launch(networkCoroutineDispatcher) {
+            locations.postValue(locationService.getLocations())
+            choiceAttributes.postValue(attributeService.getAttributes())
+
+            preferences.getProfile()?.let { profileId ->
+                preferences.saveProfile(profileId)
+                profile.postValue(profileService.getProfile(profileId))
+            }
         }
     }
 
@@ -77,6 +88,6 @@ class ProfileViewModel @Inject constructor(
         profile: Profile?, locations: Locations?, attributes: SingleChoiceAttributes?
     ): ViewableProfile? {
         return if (profile == null || locations == null || attributes == null) null
-        else viewableProfileAdapter.convert(profile, locations, attributes)
+        else profileAdapter.convert(profile, locations, attributes)
     }
 }
