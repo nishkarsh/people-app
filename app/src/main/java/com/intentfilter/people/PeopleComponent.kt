@@ -16,6 +16,8 @@ interface PeopleComponent {
 
     fun inject(profileFragment: ProfileFragment)
 
+    fun inject(splashFragment: SplashFragment)
+
     @Component.Factory
     interface Factory {
         fun newInstance(@BindsInstance context: Context): PeopleComponent
