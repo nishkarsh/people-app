@@ -1,6 +1,7 @@
 package com.intentfilter.people.views.common.itemchooser
 
 import com.intentfilter.people.extensions.InstantExecutorExtension
+import com.intentfilter.people.extensions.getOrAwaitValue
 import com.intentfilter.people.models.NamedAttribute
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
@@ -40,9 +41,7 @@ internal class SingleAttributeChooserViewModelTest {
 
         viewModel.selectAttribute(1)
 
-        viewModel.selectedAttribute.observeForever {
-            assertThat(it, `is`(attributeTwo))
-        }
+        assertThat(viewModel.selectedAttribute.getOrAwaitValue(), `is`(attributeTwo))
     }
 
     @AfterEach

@@ -10,7 +10,7 @@ object ProfileBindingAdapter {
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun loadImage(view: ImageView, uri: String?) {
-        val height = view.context.resources.getDimensionPixelSize(R.dimen.profile_picture_min_height)
-        uri?.let { Picasso.with(view.context).load(uri).resize(view.width, height).centerCrop().into(view) }
+        view.context.resources.getDimensionPixelSize(R.dimen.profile_picture_min_height)
+        uri?.let { Picasso.with(view.context).load(uri).fit().centerCrop().into(view) }
     }
 }
