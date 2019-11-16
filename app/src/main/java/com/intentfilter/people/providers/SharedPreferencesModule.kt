@@ -7,11 +7,11 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class SharedPreferencesModule(private val context: Context) {
+class SharedPreferencesModule {
 
     @Provides
     @Singleton
-    fun providePreferences(): SharedPreferences {
+    fun providePreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences("intentfilter", Context.MODE_PRIVATE)
     }
 }

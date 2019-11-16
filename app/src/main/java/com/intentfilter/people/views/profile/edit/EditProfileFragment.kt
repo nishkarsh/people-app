@@ -18,7 +18,6 @@ import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
 import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
-import com.intentfilter.people.providers.SharedPreferencesModule
 import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.views.common.CircleTransform
@@ -54,8 +53,7 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        DaggerPeopleComponent.builder().sharedPreferencesModule(SharedPreferencesModule(requireContext())).build()
-            .inject(this)
+        DaggerPeopleComponent.factory().newInstance(requireContext()).inject(this)
 
         profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java).apply {
             choiceAttributes.observe(viewLifecycleOwner, Observer {

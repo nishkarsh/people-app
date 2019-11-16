@@ -24,7 +24,7 @@ internal class SharedPreferencesModuleTest {
     internal fun shouldProvideSharedPreferences(@Mock sharedPreferences: SharedPreferences) {
         whenever(context.getSharedPreferences("intentfilter", Context.MODE_PRIVATE)).thenReturn(sharedPreferences)
 
-        val providedSharedPreferences = sharedPreferencesModule.providePreferences()
+        val providedSharedPreferences = sharedPreferencesModule.providePreferences(context)
 
         assertThat(providedSharedPreferences, `is`(instanceOf(SharedPreferences::class.java)))
     }

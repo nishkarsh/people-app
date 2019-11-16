@@ -32,8 +32,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        DaggerPeopleComponent.builder().sharedPreferencesModule(SharedPreferencesModule(requireContext())).build()
-            .inject(this)
+        DaggerPeopleComponent.factory().newInstance(requireContext()).inject(this)
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
         viewModel.viewableProfile.observe(viewLifecycleOwner, Observer {
