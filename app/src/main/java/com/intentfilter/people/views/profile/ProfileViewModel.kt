@@ -35,14 +35,16 @@ class ProfileViewModel @Inject constructor(
     init {
         triggerFetch()
 
-        viewableProfile.addSource(choiceAttributes) { attributes ->
-            toViewableProfile(profile.value, locations.value, attributes)?.let { viewableProfile.postValue(it) }
-        }
-        viewableProfile.addSource(locations) { locations ->
-            toViewableProfile(profile.value, locations, choiceAttributes.value)?.let { viewableProfile.postValue(it) }
-        }
-        viewableProfile.addSource(profile) { profile ->
-            toViewableProfile(profile, locations.value, choiceAttributes.value)?.let { viewableProfile.postValue(it) }
+        viewableProfile.apply {
+            addSource(choiceAttributes) { attributes ->
+                toViewableProfile(profile.value, locations.value, attributes)?.let { viewableProfile.postValue(it) }
+            }
+            addSource(locations) { locations ->
+                toViewableProfile(profile.value, locations, choiceAttributes.value)?.let { viewableProfile.postValue(it) }
+            }
+            addSource(profile) { profile ->
+                toViewableProfile(profile, locations.value, choiceAttributes.value)?.let { viewableProfile.postValue(it) }
+            }
         }
     }
 
@@ -50,12 +52,17 @@ class ProfileViewModel @Inject constructor(
         logger.d("Triggering fetch of profile, locations and choice attributes")
 
         viewModelScope.launch(networkCoroutineDispatcher) {
-            locations.postValue(locationService.getLocations())
-            choiceAttributes.postValue(attributeService.getAttributes())
+            try {
+                locations.postValue(locationService.getLocations())
+                choiceAttributes.postValue(attributeService.getAttributes())
 
-            preferences.getProfile()?.let { profileId ->
-                preferences.saveProfile(profileId)
-                profile.postValue(profileService.getProfile(profileId))
+                preferences.getProfile()?.let { profileId ->
+                    preferences.saveProfile(profileId)
+                    profile.postValue(profileService.getProfile(profileId))
+                }
+            } catch (exception: Exception) {
+                logger.e("An error occurred while fetching data: $exception")
+                error.postValue(exception.message)
             }
         }
     }

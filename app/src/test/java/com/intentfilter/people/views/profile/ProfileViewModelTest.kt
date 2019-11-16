@@ -34,6 +34,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
 
+@ExperimentalCoroutinesApi
 @Extensions(
     ExtendWith(MockitoExtension::class),
     ExtendWith(RandomBeansExtension::class),
@@ -55,7 +56,6 @@ internal class ProfileViewModelTest {
     private lateinit var viewModel: ProfileViewModel
 
     @BeforeEach
-    @ExperimentalCoroutinesApi
     internal fun setUp() {
         coroutineDispatcher = TestCoroutineDispatcher()
         Dispatchers.setMain(coroutineDispatcher)
@@ -66,7 +66,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     internal fun shouldFetchDuringInit(
         @Random attributes: SingleChoiceAttributes, @Random locations: Locations, @Random profile: Profile
     ) = runBlockingTest {
@@ -85,7 +84,15 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
+    internal fun shouldPostErrorWhenExceptionOccursOnFetch(@Random errorMessage: String) = runBlockingTest {
+        whenever(attributeService.getAttributes()).thenThrow(RuntimeException(errorMessage))
+
+        viewModel.triggerFetch()
+
+        assertThat(viewModel.error.value, `is`(errorMessage))
+    }
+
+    @Test
     fun shouldGetChoiceAttributes(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -95,7 +102,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetLocations(@Random locations: Locations) = runBlockingTest {
         whenever(locationService.getLocations()).thenReturn(locations)
 
@@ -105,7 +111,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetProfileWhenProfileIdExistInPreferences(@Random profile: Profile) = runBlockingTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
@@ -116,7 +121,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldNotAttemptGetProfileWhenProfileIdNotPresentInPreferences() = runBlockingTest {
         viewModel.profile.value
 
@@ -124,7 +128,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     internal fun shouldPostToViewableProfileWhenAvailable(
         @Random attributes: SingleChoiceAttributes, @Random locations: Locations, @Random profile: Profile, @Random viewableProfile: ViewableProfile
     ) = runBlockingTest {
@@ -140,7 +143,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     internal fun shouldNotAttemptConvertToViewableProfileWhenLocationsNotAvailable(
         @Random attributes: SingleChoiceAttributes, @Random profile: Profile
     ) = runBlockingTest {
@@ -157,7 +159,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     internal fun shouldNotAttemptConvertToViewableProfileWhenChoiceAttributesNotAvailable(
         @Random locations: Locations, @Random profile: Profile
     ) = runBlockingTest {
@@ -174,7 +175,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     internal fun shouldNotAttemptConvertToViewableProfileWhenNotAvailable(
         @Random attributes: SingleChoiceAttributes, @Random locations: Locations
     ) = runBlockingTest {
@@ -190,7 +190,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetGenderOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -200,7 +199,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetEthnicityOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -210,7 +208,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetFigureTypeOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -220,7 +217,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetReligionOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -230,7 +226,6 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    @ExperimentalCoroutinesApi
     fun shouldGetMaritalStatusOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
@@ -256,7 +251,6 @@ internal class ProfileViewModelTest {
     }
 
     @AfterEach
-    @ExperimentalCoroutinesApi
     internal fun tearDown() {
         Dispatchers.resetMain()
     }
