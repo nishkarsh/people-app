@@ -9,13 +9,13 @@ import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
 import com.intentfilter.people.utilities.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val attributeService: AttributeService, private val locationService: LocationService,
     private val profileService: ProfileService, private val preferences: Preferences,
-    networkCoroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val viewableProfileAdapter: ViewableProfileAdapter, networkCoroutineDispatcher: CoroutineDispatcher = IO
 ) : ViewModel() {
 
     var profilePicture = MutableLiveData<Uri>()
@@ -77,6 +77,6 @@ class ProfileViewModel @Inject constructor(
         profile: Profile?, locations: Locations?, attributes: SingleChoiceAttributes?
     ): ViewableProfile? {
         return if (profile == null || locations == null || attributes == null) null
-        else ViewableProfileAdapter.convert(profile, locations, attributes)
+        else viewableProfileAdapter.convert(profile, locations, attributes)
     }
 }

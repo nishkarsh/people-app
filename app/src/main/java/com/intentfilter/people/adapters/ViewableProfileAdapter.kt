@@ -3,10 +3,11 @@ package com.intentfilter.people.adapters
 import com.intentfilter.people.models.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
+import javax.inject.Inject
 
-object ViewableProfileAdapter {
+open class ViewableProfileAdapter @Inject constructor() {
 
-    fun convert(profile: Profile, locations: Locations, choiceAttributes: SingleChoiceAttributes): ViewableProfile {
+    open fun convert(profile: Profile, locations: Locations, choiceAttributes: SingleChoiceAttributes): ViewableProfile {
         return ViewableProfile(
             profile.displayName, profile.actualFullName, profile.profilePicturePath, formatBirthday(profile.birthday),
             getAttributeName(profile.genderId, choiceAttributes.gender)!!,

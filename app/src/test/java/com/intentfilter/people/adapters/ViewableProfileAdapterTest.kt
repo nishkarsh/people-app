@@ -13,10 +13,14 @@ internal class ViewableProfileAdapterTest {
     private lateinit var classLoader: ClassLoader
     private lateinit var objectMapper: ObjectMapper
 
+    private lateinit var viewableProfileAdapter: ViewableProfileAdapter
+
     @BeforeEach
     internal fun setUp() {
         classLoader = ClassLoaderUtils.getDefaultClassLoader()
         objectMapper = ObjectMapper()
+
+        viewableProfileAdapter = ViewableProfileAdapter()
     }
 
     @Test
@@ -49,7 +53,7 @@ internal class ViewableProfileAdapterTest {
         val choiceAttributes = readObjectsFromFile("sample-choice-attributes.json", SingleChoiceAttributes::class)
         val locations = readObjectsFromFile("cities-slice.json", Locations::class)
 
-        val convertedProfile = ViewableProfileAdapter.convert(profile, locations, choiceAttributes)
+        val convertedProfile = viewableProfileAdapter.convert(profile, locations, choiceAttributes)
 
         assertThat(convertedProfile, `is`(viewableProfile))
     }
