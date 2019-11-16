@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
 import com.intentfilter.people.databinding.FragmentProfileBinding
-import com.intentfilter.people.providers.SharedPreferencesModule
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.views.profile.ProfileViewModel
 import com.intentfilter.people.views.profile.ProfileViewModelFactory
@@ -37,7 +36,7 @@ class ProfileFragment : Fragment() {
             .inject(this)
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
-        viewModel.profile.observe(viewLifecycleOwner, Observer {
+        viewModel.viewableProfile.observe(viewLifecycleOwner, Observer {
             binding?.profile = it
             logger.d("Got profile: $it")
         })

@@ -8,7 +8,7 @@ data class ViewableProfile(
     val gender: String,
     val ethnicity: String?,
     val religion: String?,
-    val height: Double?,
+    val height: String?,
     val figureType: String?,
     val maritalStatus: String,
     val occupation: String?,

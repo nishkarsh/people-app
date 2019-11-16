@@ -6,7 +6,7 @@
     <data>
         <variable
             name="profile"
-            type="com.intentfilter.people.models.Profile" />
+            type="com.intentfilter.people.models.ViewableProfile" />
     </data>
 
     <FrameLayout
@@ -46,6 +46,7 @@
             android:layout_marginBottom="8dp"
             android:textColor="@color/white_70percent_opacity"
             android:textSize="@dimen/font_size_small"
+            android:text="@{profile.location}"
             tools:text="@string/placeholder_location" />
 
     </FrameLayout>

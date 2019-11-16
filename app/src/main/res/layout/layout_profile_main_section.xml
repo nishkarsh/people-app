@@ -6,7 +6,7 @@
     <data>
         <variable
             name="profile"
-            type="com.intentfilter.people.models.Profile" />
+            type="com.intentfilter.people.models.ViewableProfile" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.gender}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_gender"
             tools:text="Male" />
@@ -60,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.birthday}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_birthday"
             tools:text="January 30" />
@@ -79,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.ethnicity}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_ethnicity"
             tools:text="Pacific Islander" />
@@ -98,6 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.religion}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_religion"
             tools:text="Hindu" />
@@ -117,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.height}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_height"
             tools:text="155.448 cm" />
@@ -136,6 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{profile.figureType}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/label_figure"
             tools:text="Athletic" />
@@ -156,9 +162,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:text='@{profile.aboutMe, default="Not Specified"}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_about_me"
-            android:text="@{profile.aboutMe}"
             tools:text="@string/placeholder_about_me" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

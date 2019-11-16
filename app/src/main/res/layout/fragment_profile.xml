@@ -7,7 +7,7 @@
     <data>
         <variable
             name="profile"
-            type="com.intentfilter.people.models.Profile" />
+            type="com.intentfilter.people.models.ViewableProfile" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
