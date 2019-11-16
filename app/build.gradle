@@ -34,6 +34,9 @@ android {
             buildConfigField("String", "PROFILE_SERVICE_BASE_URL", '"http://10.0.2.2:9740"')
         }
     }
+    dataBinding {
+        enabled = true
+    }
     testOptions {
         unitTests.all {
             useJUnitPlatform()

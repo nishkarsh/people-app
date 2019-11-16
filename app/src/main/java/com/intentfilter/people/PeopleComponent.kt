@@ -11,4 +11,6 @@ import javax.inject.Singleton
 @Singleton
 interface PeopleComponent {
     fun inject(editProfileFragment: EditProfileFragment)
+
+    fun inject(profileFragment: ProfileFragment)
 }

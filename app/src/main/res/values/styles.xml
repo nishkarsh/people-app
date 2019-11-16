@@ -9,7 +9,7 @@
 
     <style name="PeopleTheme.ScreenTitle">
         <item name="android:textColor">@color/offWhite</item>
-        <item name="android:textSize">@dimen/font_size_medium</item>
+        <item name="android:textSize">@dimen/font_size_large</item>
     </style>
 
     <style name="PeopleTheme.SectionTitle">

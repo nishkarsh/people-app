@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:showIn="@layout/fragment_profile">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:contentDescription="@string/placeholder_profile_image"
-        android:src="@drawable/ic_profile" />
+    <data>
+        <variable
+            name="profile"
+            type="com.intentfilter.people.models.Profile" />
+    </data>
 
-    <ImageView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/profile_image"
-        android:minHeight="@dimen/profile_picture_min_height"
-        android:scaleType="fitCenter" />
+        tools:showIn="@layout/fragment_profile">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/light_to_dark_gradient" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/placeholder_profile_image"
+            android:src="@drawable/ic_profile" />
 
-    <TextView
-        android:id="@+id/rating_unavailable_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="@dimen/standard_margin"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/white_70percent_opacity"
-        android:textSize="@dimen/font_size_small"
-        tools:text="@string/placeholder_location" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/profile_image"
+            android:minHeight="@dimen/profile_picture_min_height"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{profile.profilePicturePath}" />
 
-</FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/light_to_dark_gradient" />
+
+        <TextView
+            android:id="@+id/viewLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/white_70percent_opacity"
+            android:textSize="@dimen/font_size_small"
+            tools:text="@string/placeholder_location" />
+
+    </FrameLayout>
+
+</layout>

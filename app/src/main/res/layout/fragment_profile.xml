@@ -1,48 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".views.profile.ProfileFragment">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <data>
+        <variable
+            name="profile"
+            type="com.intentfilter.people.models.Profile" />
+    </data>
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:collapsedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
-            app:contentScrim="@color/colorPrimary"
-            app:expandedTitleGravity="bottom"
-            app:expandedTitleMarginStart="@dimen/standard_margin"
-            app:expandedTitleMarginTop="@dimen/standard_margin"
-            app:expandedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            tools:title="@string/placeholder_profile_name">
-
-            <include layout="@layout/layout_profile_top_section" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin">
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical"
+        tools:context=".views.profile.detail.ProfileFragment">
 
-        <include layout="@layout/layout_profile_main_section" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:collapsedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
+                app:contentScrim="@color/colorPrimary"
+                app:expandedTitleGravity="bottom"
+                app:expandedTitleMarginStart="@dimen/standard_margin"
+                app:expandedTitleMarginTop="@dimen/standard_margin"
+                app:expandedTitleTextAppearance="@style/PeopleTheme.ScreenTitle"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:title="@{profile.displayName}"
+                tools:title="@string/placeholder_profile_name">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <include
+                    layout="@layout/layout_profile_top_section"
+                    bind:profile="@{profile}" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin">
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                layout="@layout/layout_profile_main_section"
+                bind:profile="@{profile}" />
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

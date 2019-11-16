@@ -1,155 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/standard_margin"
-    tools:showIn="@layout/fragment_profile">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/title_personal_information"
-        style="@style/PeopleTheme.SectionTitle"
-        android:layout_width="wrap_content"
+    <data>
+        <variable
+            name="profile"
+            type="com.intentfilter.people.models.Profile" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_personal_information"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="@dimen/standard_margin"
+        tools:showIn="@layout/fragment_profile">
 
-    <!-- TODO Extract the label and value pair to a custom view -->
+        <TextView
+            android:id="@+id/title_personal_information"
+            style="@style/PeopleTheme.SectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_personal_information"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/label_gender"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_gender"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/title_personal_information" />
+        <!-- TODO Extract the label and value pair to a custom view -->
 
-    <TextView
-        android:id="@+id/gender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_gender"
-        tools:text="Male" />
+        <TextView
+            android:id="@+id/label_gender"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_gender"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/title_personal_information" />
 
-    <TextView
-        android:id="@+id/label_birthday"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_birthday"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/label_gender" />
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_gender"
+            tools:text="Male" />
 
-    <TextView
-        android:id="@+id/birthday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_birthday"
-        tools:text="January 30" />
+        <TextView
+            android:id="@+id/label_birthday"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_birthday"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/label_gender" />
 
-    <TextView
-        android:id="@+id/label_ethnicity"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_ethnicity"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/label_birthday" />
+        <TextView
+            android:id="@+id/birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_birthday"
+            tools:text="January 30" />
 
-    <TextView
-        android:id="@+id/ethnicity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_ethnicity"
-        tools:text="Pacific Islander" />
+        <TextView
+            android:id="@+id/label_ethnicity"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_ethnicity"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/label_birthday" />
 
-    <TextView
-        android:id="@+id/label_religion"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_religion"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/label_ethnicity" />
+        <TextView
+            android:id="@+id/ethnicity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_ethnicity"
+            tools:text="Pacific Islander" />
 
-    <TextView
-        android:id="@+id/religion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_religion"
-        tools:text="Hindu" />
+        <TextView
+            android:id="@+id/label_religion"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_religion"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/label_ethnicity" />
 
-    <TextView
-        android:id="@+id/label_height"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_height"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/label_religion" />
+        <TextView
+            android:id="@+id/religion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_religion"
+            tools:text="Hindu" />
 
-    <TextView
-        android:id="@+id/height"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_height"
-        tools:text="155.448 cm" />
+        <TextView
+            android:id="@+id/label_height"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_height"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/label_religion" />
 
-    <TextView
-        android:id="@+id/label_figure"
-        style="@style/PeopleTheme.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_figure"
-        app:layout_constraintStart_toStartOf="@+id/title_personal_information"
-        app:layout_constraintTop_toBottomOf="@id/label_height" />
+        <TextView
+            android:id="@+id/height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_height"
+            tools:text="155.448 cm" />
 
-    <TextView
-        android:id="@+id/figure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/label_figure"
-        tools:text="Athletic" />
+        <TextView
+            android:id="@+id/label_figure"
+            style="@style/PeopleTheme.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_figure"
+            app:layout_constraintStart_toStartOf="@+id/title_personal_information"
+            app:layout_constraintTop_toBottomOf="@id/label_height" />
 
-    <TextView
-        android:id="@+id/title_about_me"
-        style="@style/PeopleTheme.SectionTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/label_about_me"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_figure" />
+        <TextView
+            android:id="@+id/figure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_figure"
+            tools:text="Athletic" />
 
-    <TextView
-        android:id="@+id/about_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_about_me"
-        tools:text="@string/placeholder_about_me" />
+        <TextView
+            android:id="@+id/title_about_me"
+            style="@style/PeopleTheme.SectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/label_about_me"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_figure" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/about_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_about_me"
+            android:text="@{profile.aboutMe}"
+            tools:text="@string/placeholder_about_me" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
