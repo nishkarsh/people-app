@@ -114,10 +114,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun setProfilePicture(imageUri: Uri?) {
-        viewableProfile.let {
-            val current = it.value
-            current?.profilePicturePath = imageUri?.toString()
-            it.postValue(current)
+        imageUri?.let {
+            val current = viewableProfile.value ?: ViewableProfile()
+            current.profilePicturePath = imageUri.toString()
+            viewableProfile.postValue(current)
         }
     }
 

@@ -1,17 +1,17 @@
 package com.intentfilter.people.models
 
 data class ViewableProfile(
-    var displayName: String,
-    var actualFullName: String,
-    var profilePicturePath: String?,
-    var birthday: String,
-    var gender: String,
-    var ethnicity: String?,
-    var religion: String?,
-    var height: String?,
-    var figureType: String?,
-    var maritalStatus: String,
-    var occupation: String?,
-    var aboutMe: String?,
-    var location: String
+    var displayName: String? = null,
+    var actualFullName: String? = null,
+    var profilePicturePath: String? = null,
+    var birthday: String? = null,
+    var gender: String? = null,
+    var ethnicity: String? = null,
+    var religion: String? = null,
+    var height: String? = null,
+    var figureType: String? = null,
+    var maritalStatus: String? = null,
+    var occupation: String? = null,
+    var aboutMe: String? = null,
+    var location: String? = null
 )
