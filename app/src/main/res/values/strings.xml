@@ -2,7 +2,7 @@
     <string name="app_name">People</string>
     <string name="profile_image">Your Profile Image</string>
     <string name="choose_your_profile_picture">Choose your profile picture</string>
-    <string name="hint_height">Specify your height (in metre)</string>
+    <string name="hint_height">Specify your height (in centimetre)</string>
     <string name="action_save">Save</string>
     <string name="action_create">Create</string>
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.StringRes
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
+import com.intentfilter.people.databinding.FragmentEditProfileBinding
 import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
 import com.intentfilter.people.utilities.DateUtil
@@ -37,17 +39,18 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     lateinit var viewModelFactory: ProfileViewModelFactory
 
     private lateinit var unbinder: Unbinder
+    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var binding: FragmentEditProfileBinding
+
     private val logger = Logger.loggerFor(EditProfileFragment::class)
 
-    private lateinit var profileViewModel: ProfileViewModel
-
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, state: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_edit_profile, parent, false)
-        unbinder = ButterKnife.bind(this, view)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, parent, false)
+        unbinder = ButterKnife.bind(this, binding.root)
 
         attachBirthdayChooserObserver()
 
-        return view
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,14 +59,15 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         DaggerPeopleComponent.factory().newInstance(requireContext()).inject(this)
 
         profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java).apply {
-            choiceAttributes.observe(viewLifecycleOwner, Observer {
-                logger.d("Got choice attributes from service, initializing inputs")
-            })
-
             locations.observe(viewLifecycleOwner, Observer {
                 logger.d("Got locations from service, initializing autocomplete")
 
                 viewLocation.setAdapter(LocationsAdapter(requireContext(), it.cities))
+            })
+
+            viewableProfile.observe(viewLifecycleOwner, Observer {
+                logger.d("Got viewable profile from service, initializing inputs")
+                binding.profile = it
             })
         }
         attachProfilePictureObserver()
