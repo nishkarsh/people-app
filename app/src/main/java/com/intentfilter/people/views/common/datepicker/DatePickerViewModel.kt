@@ -8,6 +8,6 @@ class DatePickerViewModel : ViewModel() {
     val selectedDate = MutableLiveData<LocalDate>()
 
     fun setDate(year: Int, month: Int, dayOfMonth: Int) {
-        selectedDate.value = LocalDate.of(year, month, dayOfMonth)
+        selectedDate.value = LocalDate.of(year, (month + 1), dayOfMonth)
     }
 }

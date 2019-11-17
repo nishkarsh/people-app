@@ -21,9 +21,9 @@ internal class DatePickerViewModelTest {
     lateinit var viewModel: DatePickerViewModel
 
     @Test
-    internal fun shouldSetDate() {
+    internal fun shouldSetDateConsideringStartingOfMonthFromZero() {
         viewModel.setDate(2019, 11, 7)
 
-        assertThat(viewModel.selectedDate.value, `is`(LocalDate.of(2019, 11, 7)))
+        assertThat(viewModel.selectedDate.value, `is`(LocalDate.of(2019, 12, 7)))
     }
 }
