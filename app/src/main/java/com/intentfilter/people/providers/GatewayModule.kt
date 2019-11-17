@@ -7,6 +7,7 @@ import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.gateways.AttributeServiceGateway
 import com.intentfilter.people.gateways.LocationServiceGateway
 import com.intentfilter.people.gateways.ProfileServiceGateway
+import com.intentfilter.people.utilities.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -58,16 +59,19 @@ class GatewayModule {
     fun provideObjectMapper(): ObjectMapper {
         return ObjectMapper().also {
             it.configure(MapperFeature.AUTO_DETECT_FIELDS, true)
-            it.configure(MapperFeature.AUTO_DETECT_GETTERS, false)
-            it.configure(MapperFeature.AUTO_DETECT_IS_GETTERS, false)
-            it.configure(MapperFeature.AUTO_DETECT_SETTERS, false)
             it.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         }
     }
 
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient {
-        return OkHttpClient().newBuilder().build()
+    fun provideHttpClient(loggingInterceptor: LoggingInterceptor): OkHttpClient {
+        return OkHttpClient().newBuilder().addNetworkInterceptor(loggingInterceptor).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): LoggingInterceptor {
+        return LoggingInterceptor()
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.intentfilter.people.gateways.AttributeServiceGateway
 import com.intentfilter.people.gateways.LocationServiceGateway
 import com.intentfilter.people.gateways.ProfileServiceGateway
+import com.intentfilter.people.utilities.LoggingInterceptor
 import io.github.glytching.junit.extension.random.RandomBeansExtension
 import okhttp3.OkHttpClient
 import org.hamcrest.core.Is.`is`
@@ -57,16 +58,23 @@ internal class GatewayModuleTest {
         val objectMapper = gatewayModule.provideObjectMapper()
 
         assertTrue(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_FIELDS))
-        assertFalse(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_GETTERS))
-        assertFalse(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_IS_GETTERS))
-        assertFalse(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_SETTERS))
+        assertTrue(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_GETTERS))
+        assertTrue(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_IS_GETTERS))
+        assertTrue(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_SETTERS))
         assertFalse(objectMapper.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES))
     }
 
     @Test
-    internal fun shouldProvideConfiguredOkHttpClient() {
-        val httpClient = gatewayModule.provideHttpClient()
+    internal fun shouldProvideConfiguredOkHttpClient(@Mock loggingInterceptor: LoggingInterceptor) {
+        val httpClient = gatewayModule.provideHttpClient(loggingInterceptor)
 
         assertThat(httpClient, `is`(instanceOf(OkHttpClient::class.java)))
+    }
+
+    @Test
+    internal fun shouldProvideLoggingInterceptor() {
+        val httpClient = gatewayModule.provideLoggingInterceptor()
+
+        assertThat(httpClient, `is`(instanceOf(LoggingInterceptor::class.java)))
     }
 }
