@@ -91,10 +91,8 @@ class ProfileViewModel @Inject constructor(
         imageUri?.let { profilePicture.postValue(imageUri) }
     }
 
-    private fun toViewableProfile(
-        profile: Profile?, locations: Locations?, attributes: SingleChoiceAttributes?
-    ): ViewableProfile? {
-        return if (profile == null || locations == null || attributes == null) null
-        else profileAdapter.convert(profile, locations, attributes)
+    private fun toViewableProfile(profile: Profile?, locations: Locations?, attrs: SingleChoiceAttributes?): ViewableProfile? {
+        return if (profile == null || locations == null || attrs == null) null
+        else profileAdapter.from(profile, locations, attrs)
     }
 }

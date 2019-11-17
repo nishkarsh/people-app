@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 open class ViewableProfileAdapter @Inject constructor() {
 
-    open fun convert(profile: Profile, locations: Locations, choiceAttributes: SingleChoiceAttributes): ViewableProfile {
+    open fun from(profile: Profile, locations: Locations, choiceAttributes: SingleChoiceAttributes): ViewableProfile {
         return ViewableProfile(
             profile.displayName, profile.actualFullName, profile.profilePicturePath, formatBirthday(profile.birthday),
             getAttributeName(profile.genderId, choiceAttributes.gender)!!,

@@ -135,7 +135,7 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
-        whenever(viewableProfileAdapter.convert(profile, locations, attributes)).thenReturn(viewableProfile)
+        whenever(viewableProfileAdapter.from(profile, locations, attributes)).thenReturn(viewableProfile)
 
         viewModel.triggerFetch()
 

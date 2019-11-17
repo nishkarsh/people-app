@@ -57,7 +57,7 @@ internal class ViewableProfileAdapterTest {
         val choiceAttributes = readObjectsFromFile("sample-choice-attributes.json", SingleChoiceAttributes::class)
         val locations = readObjectsFromFile("cities-slice.json", Locations::class)
 
-        val convertedProfile = viewableProfileAdapter.convert(profile, locations, choiceAttributes)
+        val convertedProfile = viewableProfileAdapter.from(profile, locations, choiceAttributes)
 
         assertThat(convertedProfile, `is`(viewableProfile))
     }
