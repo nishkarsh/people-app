@@ -67,6 +67,25 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun saveProfile(): RestResponse<Unit> {
+        logger.d("Saving updated profile: ${viewableProfile.value}")
+
+        val restResponse = RestResponse<Unit>()
+        viewModelScope.launch(networkCoroutineDispatcher) {
+            try {
+                fromViewableProfile(viewableProfile.value, locations.value, choiceAttributes.value, profile.value)?.let {
+                    profileService.updateProfile(it)
+                }
+                restResponse.success.postValue(Unit)
+            } catch (exception: Exception) {
+                logger.e("An error occurred while saving profile: $exception")
+                restResponse.error.postValue(exception)
+            }
+        }
+
+        return restResponse
+    }
+
     fun getGenderOptions(): Array<NamedAttribute> {
         return choiceAttributes.value!!.gender
     }
@@ -94,5 +113,12 @@ class ProfileViewModel @Inject constructor(
     private fun toViewableProfile(profile: Profile?, locations: Locations?, attrs: SingleChoiceAttributes?): ViewableProfile? {
         return if (profile == null || locations == null || attrs == null) null
         else profileAdapter.from(profile, locations, attrs)
+    }
+
+    private fun fromViewableProfile(
+        viewableProfile: ViewableProfile?, locations: Locations?, attributes: SingleChoiceAttributes?, currentProfile: Profile?
+    ): Profile? {
+        return if (viewableProfile == null || locations == null || attributes == null || currentProfile == null) null
+        else profileAdapter.from(viewableProfile, locations, attributes, currentProfile)
     }
 }

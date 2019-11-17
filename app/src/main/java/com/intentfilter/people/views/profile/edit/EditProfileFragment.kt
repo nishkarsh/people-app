@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.navigation.fragment.findNavController
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
 import com.intentfilter.people.databinding.FragmentEditProfileBinding
@@ -71,6 +74,16 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
             })
         }
         attachProfilePictureObserver()
+    }
+
+    @OnClick(R.id.buttonSave)
+    fun saveProfile() {
+        profileViewModel.saveProfile().apply {
+            success.observe(viewLifecycleOwner,
+                Observer { findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment) })
+            error.observe(viewLifecycleOwner,
+                Observer { Snackbar.make(requireView(), R.string.profile_update_error, LENGTH_LONG).show() })
+        }
     }
 
     @OnClick(R.id.profilePicture)

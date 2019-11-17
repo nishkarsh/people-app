@@ -40,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_display_name"
+                    android:singleLine="true"
                     android:text="@={profile.displayName}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -55,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_real_name"
+                    android:singleLine="true"
                     android:text="@={profile.actualFullName}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -106,7 +108,7 @@
                     android:hint="@string/hint_location"
                     android:imeOptions="actionDone"
                     android:inputType="textAutoComplete"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@={profile.location}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -155,7 +157,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_height"
                     android:inputType="numberDecimal"
-                    android:text="@={profile.height}" />
+                    android:text="@={profile.height}"
+                    android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,6 +208,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_occupation"
                     android:inputType="text"
+                    android:singleLine="true"
                     android:text="@={profile.occupation}" />
 
             </com.google.android.material.textfield.TextInputLayout>

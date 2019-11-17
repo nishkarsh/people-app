@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.hamcrest.junit.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.Extensions
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
 
@@ -90,6 +92,55 @@ internal class ProfileViewModelTest {
         viewModel.triggerFetch()
 
         assertThat(viewModel.error.value, `is`(errorMessage))
+    }
+
+    @Test
+    internal fun shouldSaveProfile(
+        @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
+        @Random choiceAttributes: SingleChoiceAttributes
+    ) = runBlockingTest {
+        // given
+        whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
+        whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(preferences.getProfile()).thenReturn(current.id)
+        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
+        whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
+
+        viewModel.triggerFetch()
+        viewModel.viewableProfile.getOrAwaitValue()
+
+        // when
+        val restResponse = viewModel.saveProfile()
+
+        // then
+        verify(profileService).updateProfile(profile)
+        assertNotNull(restResponse.success.getOrAwaitValue())
+    }
+
+    @Test
+    internal fun shouldInformAboutErrorWhenSavingProfile(
+        @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
+        @Random choiceAttributes: SingleChoiceAttributes
+    ) = runBlockingTest {
+        // given
+        whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
+        whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(preferences.getProfile()).thenReturn(current.id)
+        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
+        whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
+        whenever(profileService.updateProfile(profile)).thenThrow(RuntimeException())
+
+        viewModel.triggerFetch()
+        viewModel.viewableProfile.getOrAwaitValue()
+
+        // when
+        val restResponse = viewModel.saveProfile()
+
+        // then
+        verify(profileService).updateProfile(profile)
+        assertThat(restResponse.error.value, `is`(instanceOf(Exception::class.java)))
     }
 
     @Test

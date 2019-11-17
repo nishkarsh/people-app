@@ -19,7 +19,14 @@
         android:id="@+id/editProfileFragment"
         android:name="com.intentfilter.people.views.profile.edit.EditProfileFragment"
         android:label="@string/label_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popEnterAnim="@anim/fragment_fast_out_extra_slow_in"
+            app:popExitAnim="@anim/fragment_fast_out_extra_slow_in"
+            app:popUpTo="@+id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.intentfilter.people.SplashFragment"

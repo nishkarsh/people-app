@@ -2,6 +2,8 @@ package com.intentfilter.people.gateways
 
 import com.intentfilter.people.models.Profile
 import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ProfileServiceGateway {
@@ -13,7 +15,7 @@ interface ProfileServiceGateway {
     suspend fun create(@Body profile: Profile): Profile
 
     @PUT("/profile/{id}")
-    suspend fun update(@Path("id") id: String, @Body profile: Profile)
+    fun update(@Path("id") id: String, @Body profile: Profile): Call<Response<Unit>>
 
     @Multipart
     @POST("/profile/picture")
