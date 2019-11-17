@@ -23,18 +23,16 @@ class ProfileViewModel @Inject constructor(
     private val profileAdapter: ViewableProfileAdapter, private val networkCoroutineDispatcher: CoroutineDispatcher = IO
 ) : ViewModel() {
 
-    val profilePicture = MutableLiveData<Uri>()
-    val error = MutableLiveData<String>()
+    val error = MediatorLiveData<Exception>()
     val locations = MutableLiveData<Locations>()
     val choiceAttributes = MutableLiveData<SingleChoiceAttributes>()
-    val profile: MutableLiveData<Profile?> = MutableLiveData()
     val viewableProfile: MediatorLiveData<ViewableProfile> = MediatorLiveData()
+    val profile: MutableLiveData<Profile?> = MutableLiveData()
 
     private val logger = Logger.loggerFor(ProfileViewModel::class)
 
     init {
-        triggerFetch()
-
+        trySync()
         viewableProfile.apply {
             addSource(choiceAttributes) { attributes ->
                 toViewableProfile(profile.value, locations.value, attributes)?.let { viewableProfile.postValue(it) }
@@ -48,9 +46,10 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun triggerFetch() {
+    fun initiateSync(): RestResponse<Unit> {
         logger.d("Triggering fetch of profile, locations and choice attributes")
 
+        val restResponse = RestResponse<Unit>()
         viewModelScope.launch(networkCoroutineDispatcher) {
             try {
                 locations.postValue(locationService.getLocations())
@@ -60,11 +59,19 @@ class ProfileViewModel @Inject constructor(
                     preferences.saveProfile(profileId)
                     profile.postValue(profileService.getProfile(profileId))
                 }
+                restResponse.success.postValue(Unit)
             } catch (exception: Exception) {
                 logger.e("An error occurred while fetching data: $exception")
-                error.postValue(exception.message)
+                restResponse.error.postValue(exception)
             }
         }
+
+        return restResponse
+    }
+
+    fun trySync() {
+        val syncResponse = initiateSync()
+        error.addSource(syncResponse.error) { error.postValue(it) }
     }
 
     fun saveProfile(): RestResponse<Unit> {
@@ -107,7 +114,11 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun setProfilePicture(imageUri: Uri?) {
-        imageUri?.let { profilePicture.postValue(imageUri) }
+        viewableProfile.let {
+            val current = it.value
+            current?.profilePicturePath = imageUri?.toString()
+            it.postValue(current)
+        }
     }
 
     private fun toViewableProfile(profile: Profile?, locations: Locations?, attrs: SingleChoiceAttributes?): ViewableProfile? {

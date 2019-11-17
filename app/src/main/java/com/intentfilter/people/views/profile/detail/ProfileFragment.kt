@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
             }
 
             viewableProfile.observe(viewLifecycleOwner, viewableProfileObserver)
-            error.observe(viewLifecycleOwner, Observer { error -> onError(error) })
+            error.observe(viewLifecycleOwner, Observer { error -> onError(error.message.toString()) })
         }
     }
 
@@ -78,7 +78,7 @@ class ProfileFragment : Fragment() {
 
     private fun ProfileViewModel.onError(error: String) {
         snackBar.setText(error)
-            .setAction(R.string.label_retry) { triggerFetch(); initializeLoaderSnackbar() }
+            .setAction(R.string.label_retry) { trySync(); initializeLoaderSnackbar() }
             .show()
     }
 

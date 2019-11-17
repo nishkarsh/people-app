@@ -25,7 +25,6 @@ import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
 import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
-import com.intentfilter.people.views.common.CircleTransform
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.Companion.TAG
 import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
@@ -33,7 +32,6 @@ import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserFr
 import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserViewModel
 import com.intentfilter.people.views.profile.ProfileViewModel
 import com.intentfilter.people.views.profile.ProfileViewModelFactory
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import javax.inject.Inject
 
@@ -73,7 +71,6 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
                 binding.profile = it
             })
         }
-        attachProfilePictureObserver()
     }
 
     @OnClick(R.id.buttonSave)
@@ -144,12 +141,6 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         val chooserViewModel = ViewModelProvider(chooserFragment).get(SingleAttributeChooserViewModel::class.java)
         chooserViewModel.selectedAttribute.observeOnce(viewLifecycleOwner, Observer {
             view.setText(it.name)
-        })
-    }
-
-    private fun attachProfilePictureObserver() {
-        profileViewModel.profilePicture.observe(viewLifecycleOwner, Observer {
-            Picasso.with(context).load(it).transform(CircleTransform()).into(profilePicture)
         })
     }
 

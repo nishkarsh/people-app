@@ -89,9 +89,10 @@ internal class ProfileViewModelTest {
     internal fun shouldPostErrorWhenExceptionOccursOnFetch(@Random errorMessage: String) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenThrow(RuntimeException(errorMessage))
 
-        viewModel.triggerFetch()
+        val restResponse = viewModel.initiateSync()
 
-        assertThat(viewModel.error.value, `is`(errorMessage))
+        assertThat(restResponse.error.value, `is`(instanceOf(Exception::class.java)))
+        assertThat(restResponse.error.value?.message, `is`(errorMessage))
     }
 
     @Test
@@ -107,7 +108,7 @@ internal class ProfileViewModelTest {
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
         viewModel.viewableProfile.getOrAwaitValue()
 
         // when
@@ -132,7 +133,7 @@ internal class ProfileViewModelTest {
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
         whenever(profileService.updateProfile(profile)).thenThrow(RuntimeException())
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
         viewModel.viewableProfile.getOrAwaitValue()
 
         // when
@@ -147,7 +148,7 @@ internal class ProfileViewModelTest {
     fun shouldGetChoiceAttributes(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.choiceAttributes.value, `is`(attributes))
     }
@@ -156,7 +157,7 @@ internal class ProfileViewModelTest {
     fun shouldGetLocations(@Random locations: Locations) = runBlockingTest {
         whenever(locationService.getLocations()).thenReturn(locations)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.locations.value, `is`(locations))
     }
@@ -166,7 +167,7 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.profile.value, `is`(profile))
     }
@@ -188,7 +189,7 @@ internal class ProfileViewModelTest {
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
         whenever(viewableProfileAdapter.from(profile, locations, attributes)).thenReturn(viewableProfile)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.viewableProfile.getOrAwaitValue(), `is`(viewableProfile))
     }
@@ -201,7 +202,7 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
@@ -217,7 +218,7 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profile.id)
         whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
@@ -232,7 +233,7 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(locationService.getLocations()).thenReturn(locations)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
         viewModel.viewableProfile.observeForever {
@@ -244,7 +245,7 @@ internal class ProfileViewModelTest {
     fun shouldGetGenderOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.getGenderOptions(), `is`(attributes.gender))
     }
@@ -253,7 +254,7 @@ internal class ProfileViewModelTest {
     fun shouldGetEthnicityOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.getEthnicityOptions(), `is`(attributes.ethnicity))
     }
@@ -262,7 +263,7 @@ internal class ProfileViewModelTest {
     fun shouldGetFigureTypeOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.getFigureTypeOptions(), `is`(attributes.figure))
     }
@@ -271,7 +272,7 @@ internal class ProfileViewModelTest {
     fun shouldGetReligionOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.getReligionOptions(), `is`(attributes.religion))
     }
@@ -280,7 +281,7 @@ internal class ProfileViewModelTest {
     fun shouldGetMaritalStatusOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
-        viewModel.triggerFetch()
+        viewModel.initiateSync()
 
         assertThat(viewModel.getMaritalStatusOptions(), `is`(attributes.maritalStatus))
     }
@@ -289,16 +290,16 @@ internal class ProfileViewModelTest {
     internal fun shouldSetProfilePictureWhenUriNotNull(@Mock uri: Uri) {
         viewModel.setProfilePicture(uri)
 
-        assertThat(viewModel.profilePicture.value, `is`(uri))
+        assertThat(viewModel.viewableProfile.value?.profilePicturePath, `is`(uri.toString()))
     }
 
     @Test
-    internal fun shouldNotSetProfilePictureWhenUriNull(@Mock uri: Uri) {
+    internal fun shouldNotSetProfilePictureWhenNullUriReceivedAsParam(@Mock uri: Uri) {
         viewModel.setProfilePicture(uri)
 
         viewModel.setProfilePicture(null)
 
-        assertNotNull(viewModel.profilePicture.value)
+        assertNotNull(viewModel.viewableProfile.value?.profilePicturePath)
     }
 
     @AfterEach
