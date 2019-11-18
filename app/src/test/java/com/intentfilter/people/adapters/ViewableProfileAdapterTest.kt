@@ -1,6 +1,7 @@
 package com.intentfilter.people.adapters
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.models.*
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
@@ -41,7 +42,7 @@ internal class ViewableProfileAdapterTest {
         val viewableProfile = ViewableProfile(
             "Nishkarsh",
             "Nishkarsh Sharma",
-            "http://10.0.2.2:9740/uploads/2ac4cbfec5d66d3c996c521969199e58.jpg",
+            "${BuildConfig.IMAGE_UPLOAD_PATH}2ac4cbfec5d66d3c996c521969199e58.jpg",
             "10 November, 2000",
             "Male",
             "Mixed",
@@ -66,7 +67,7 @@ internal class ViewableProfileAdapterTest {
     internal fun shouldConvertViewableProfileToProfile(@Random currentProfile: Profile) {
         val viewableProfile = ViewableProfile(
             "Nishkarsh", "Nishkarsh Sharma",
-            "http://10.0.2.2:9740/uploads/2ac4cbfec5d66d3c996c521969199e58.jpg", "10 November, 2000",
+            "${BuildConfig.IMAGE_UPLOAD_PATH}2ac4cbfec5d66d3c996c521969199e58.jpg", "10 November, 2000",
             "Male", "Mixed", "Hindu", "125.0",
             "Athletic", "Never Married", "Applications Developer",
             "I am a cool person. I mean really. I like to try new things and would do anything at least once for the experiene of it.",

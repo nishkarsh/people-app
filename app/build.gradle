@@ -34,6 +34,14 @@ android {
             buildConfigField("String", "PROFILE_SERVICE_BASE_URL", '"http://10.0.2.2:9740"')
             buildConfigField("String", "IMAGE_UPLOAD_PATH", '"http://10.0.2.2:9740/uploads/"')
         }
+
+        QA {
+            dimension "environment"
+            buildConfigField("String", "ATTRIBUTE_SERVICE_BASE_URL", '"http://localhost:8080"')
+            buildConfigField("String", "LOCATION_SERVICE_BASE_URL", '"http://localhost:8080"')
+            buildConfigField("String", "PROFILE_SERVICE_BASE_URL", '"http://localhost:8080"')
+            buildConfigField("String", "IMAGE_UPLOAD_PATH", '"http://localhost:8080/uploads/"')
+        }
     }
     dataBinding {
         enabled = true
@@ -112,5 +120,5 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     debugImplementation 'androidx.fragment:fragment-testing:1.2.0-rc02'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
-
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.12.0'
 }

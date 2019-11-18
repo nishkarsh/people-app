@@ -19,8 +19,11 @@ import androidx.test.rule.ActivityTestRule
 import com.intentfilter.people.R
 import com.intentfilter.people.models.ViewableProfile
 import com.intentfilter.people.views.HomeActivity
+import com.intentfilter.people.views.profile.edit.mockserver.RequestDispatcher
+import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,12 +31,14 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
+
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 internal class CreateProfileTest {
     @get:Rule
     var activityRule: ActivityTestRule<HomeActivity> = ActivityTestRule(HomeActivity::class.java)
 
+    private lateinit var webServer: MockWebServer
     private lateinit var viewableProfile: ViewableProfile
 
     @Before
@@ -47,6 +52,10 @@ internal class CreateProfileTest {
             "I am a cool person. I mean really. I like to try new things and would do anything at least once for the experience of it.",
             "Abidjan"
         )
+
+        webServer = MockWebServer()
+        webServer.setDispatcher(RequestDispatcher())
+        webServer.start(8080)
     }
 
     @Test
@@ -96,5 +105,11 @@ internal class CreateProfileTest {
         onView(allOf(withClassName(equalTo(Button::class.java.name)), withText("Create"))).perform(scrollTo(), click())
 
         verify(navController).navigate(R.id.action_editProfileFragment_to_profileFragment)
+    }
+
+    @After
+    @Throws(Exception::class)
+    fun tearDown() {
+        webServer.shutdown()
     }
 }
