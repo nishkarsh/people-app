@@ -71,7 +71,7 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(preferences.getProfile()).thenReturn(profile.id)
-        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+        whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
 
         val viewModel = ProfileViewModel(
             attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
@@ -93,21 +93,48 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    internal fun shouldSaveProfile(
-        @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
-        @Random choiceAttributes: SingleChoiceAttributes, @Mock profilePicture: File, @Random filePath: FilePath
+    internal fun shouldCreateProfile(
+        @Random profile: Profile, @Random locations: Locations, @Random choiceAttributes: SingleChoiceAttributes,
+        @Mock profilePicture: File, @Random filePath: FilePath
     ) = runBlockingTest {
-        // given
         viewModel.selectedProfilePicture = profilePicture
 
         whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(profileService.uploadPicture(profilePicture)).thenReturn(filePath)
+        whenever(viewableProfileAdapter.from(ViewableProfile(), locations, choiceAttributes, null)).thenReturn(profile)
+        whenever(profileService.createProfile(profile)).thenReturn(profile)
+
+        viewModel.initiateSync()
+        viewModel.viewableProfile.getOrAwaitValue()
+
+        // when
+        val restResponse = viewModel.saveProfile()
+
+        verify(profileService).createProfile(profile)
+        verify(preferences).saveProfile(profile.id!!)
+        assertNotNull(restResponse.success.getOrAwaitValue())
+        assertThat(profile.profilePicturePath, `is`(filePath.fileName))
+    }
+
+    @Test
+    internal fun shouldUpdateProfile(
+        @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
+        @Random choiceAttributes: SingleChoiceAttributes, @Mock profilePicture: File, @Random filePath: FilePath
+    ) = runBlockingTest {
+        // given
+        whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
+        whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(profileService.uploadPicture(profilePicture)).thenReturn(filePath)
         whenever(preferences.getProfile()).thenReturn(current.id)
-        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(profileService.getProfile(current.id!!)).thenReturn(current)
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
+        viewModel = ProfileViewModel(
+            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+        )
 
+        viewModel.selectedProfilePicture = profilePicture
         viewModel.initiateSync()
         viewModel.viewableProfile.getOrAwaitValue()
 
@@ -130,9 +157,12 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(preferences.getProfile()).thenReturn(current.id)
-        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(profileService.getProfile(current.id!!)).thenReturn(current)
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
+        viewModel = ProfileViewModel(
+            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+        )
 
         viewModel.initiateSync()
         viewModel.viewableProfile.getOrAwaitValue()
@@ -156,10 +186,13 @@ internal class ProfileViewModelTest {
         whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(preferences.getProfile()).thenReturn(current.id)
-        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(profileService.getProfile(current.id!!)).thenReturn(current)
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
         whenever(profileService.updateProfile(profile)).thenThrow(RuntimeException())
+        viewModel = ProfileViewModel(
+            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+        )
 
         viewModel.initiateSync()
         viewModel.viewableProfile.getOrAwaitValue()
@@ -178,7 +211,7 @@ internal class ProfileViewModelTest {
             whenever(attributeService.getAttributes()).thenReturn(attributes)
             whenever(locationService.getLocations()).thenReturn(locations)
             whenever(preferences.getProfile()).thenReturn(profile.id)
-            whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+            whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
 
             viewModel.initiateSync()
 
@@ -201,7 +234,7 @@ internal class ProfileViewModelTest {
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(preferences.getProfile()).thenReturn(profile.id)
-        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+        whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
         whenever(viewableProfileAdapter.from(profile, locations, attributes)).thenReturn(viewableProfile)
 
         viewModel.initiateSync()
@@ -215,14 +248,11 @@ internal class ProfileViewModelTest {
     ) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
         whenever(preferences.getProfile()).thenReturn(profile.id)
-        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+        whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
 
         viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
-        viewModel.viewableProfile.observeForever {
-            assertNull(it)
-        }
     }
 
     @Test
@@ -231,14 +261,11 @@ internal class ProfileViewModelTest {
     ) = runBlockingTest {
         whenever(locationService.getLocations()).thenReturn(locations)
         whenever(preferences.getProfile()).thenReturn(profile.id)
-        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
+        whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
 
         viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
-        viewModel.viewableProfile.observeForever {
-            assertNull(it)
-        }
     }
 
     @Test
@@ -251,9 +278,6 @@ internal class ProfileViewModelTest {
         viewModel.initiateSync()
 
         verifyNoMoreInteractions(viewableProfileAdapter)
-        viewModel.viewableProfile.observeForever {
-            assertNull(it)
-        }
     }
 
     @Test

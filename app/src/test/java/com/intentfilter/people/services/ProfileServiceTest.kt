@@ -36,9 +36,9 @@ internal class ProfileServiceTest {
 
     @Test
     internal fun shouldGetProfile(@Random profile: Profile) = runBlocking {
-        `when`(gateway.get(profile.id)).thenReturn(profile)
+        `when`(gateway.get(profile.id!!)).thenReturn(profile)
 
-        val fetchedProfile = service.getProfile(profile.id)
+        val fetchedProfile = service.getProfile(profile.id!!)
 
         assertThat(fetchedProfile, `is`(profile))
     }
@@ -54,7 +54,7 @@ internal class ProfileServiceTest {
 
     @Test
     internal fun shouldUpdateProfile(@Random profile: Profile, @Mock call: Call<Response<Unit>>) = runBlocking {
-        `when`(gateway.update(profile.id, profile)).thenReturn(call)
+        `when`(gateway.update(profile.id!!, profile)).thenReturn(call)
 
         service.updateProfile(profile)
 

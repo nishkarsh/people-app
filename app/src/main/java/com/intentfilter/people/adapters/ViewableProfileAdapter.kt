@@ -21,15 +21,15 @@ open class ViewableProfileAdapter @Inject constructor() {
         )
     }
 
-    open fun from(viewable: ViewableProfile, locations: Locations, attrs: SingleChoiceAttributes, current: Profile): Profile? {
+    open fun from(viewable: ViewableProfile, locations: Locations, attrs: SingleChoiceAttributes, current: Profile?): Profile? {
         return Profile(
-            current.id, viewable.displayName!!, viewable.actualFullName!!, stripPrefix(viewable.profilePicturePath),
+            current?.id, viewable.displayName!!, viewable.actualFullName!!, stripPrefix(viewable.profilePicturePath),
             parseBirthday(viewable.birthday!!).toString(), getAttributeId(viewable.gender, attrs.gender).toString(),
             getAttributeId(viewable.ethnicity, attrs.ethnicity).toString(),
             getAttributeId(viewable.religion, attrs.religion).toString(), viewable.height?.toDouble(),
             getAttributeId(viewable.figureType, attrs.figure).toString(),
             getAttributeId(viewable.maritalStatus, attrs.maritalStatus).toString(),
-            viewable.occupation, viewable.aboutMe, getCityCoordinates(locations, viewable.location!!), current.version
+            viewable.occupation, viewable.aboutMe, getCityCoordinates(locations, viewable.location!!), current?.version
         )
     }
 

@@ -20,7 +20,7 @@ open class ProfileService @Inject constructor(private val gateway: ProfileServic
     }
 
     open suspend fun updateProfile(profile: Profile) {
-        gateway.update(profile.id, profile).execute()
+        gateway.update(profile.id!!, profile).execute()
     }
 
     open suspend fun uploadPicture(picture: File): FilePath {

@@ -3,7 +3,7 @@ package com.intentfilter.people.models
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Profile(
-    @JsonProperty("id") val id: String,
+    @JsonProperty("id") val id: String?,
     @JsonProperty("displayName") val displayName: String,
     @JsonProperty("actualFullName") val actualFullName: String,
     @JsonProperty("profilePicturePath") var profilePicturePath: String?,
@@ -17,7 +17,7 @@ data class Profile(
     @JsonProperty("occupation") var occupation: String?,
     @JsonProperty("aboutMe") var aboutMe: String?,
     @JsonProperty("location") val location: Coordinates,
-    @JsonProperty("version") val version: Long
+    @JsonProperty("version") val version: Long?
 )
 
 data class Coordinates(

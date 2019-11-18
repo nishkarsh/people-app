@@ -31,14 +31,14 @@ class ProfileViewModel @Inject constructor(
     val viewableProfile: MediatorLiveData<ViewableProfile> = MediatorLiveData()
     val profile: MutableLiveData<Profile?> = MutableLiveData()
 
+    private lateinit var mode: Mode
     internal var selectedProfilePicture: File? = null
     private val logger = Logger.loggerFor(ProfileViewModel::class)
-    private val mode: Mode
 
     init {
         trySync()
 
-        mode = if (noExistingProfile()) Mode.Create else Mode.Edit
+        initializeMode()
 
         viewableProfile.apply {
             addSource(choiceAttributes) { attributes ->
@@ -82,7 +82,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun saveProfile(): RestResponse<Unit> {
-        logger.d("Saving updated profile: ${viewableProfile.value}")
+        logger.d("Saving profile: ${viewableProfile.value}")
 
         val restResponse = RestResponse<Unit>()
         viewModelScope.launch(networkCoroutineDispatcher) {
@@ -93,7 +93,7 @@ class ProfileViewModel @Inject constructor(
                         it.profilePicturePath = uploadedPicturePath.fileName
                     }
 
-                    profileService.updateProfile(it)
+                    createOrUpdate(it)
                 }
                 restResponse.success.postValue(Unit)
             } catch (exception: Exception) {
@@ -135,6 +135,17 @@ class ProfileViewModel @Inject constructor(
         viewableProfile.postValue(current)
     }
 
+    private suspend fun createOrUpdate(profile: Profile) {
+        if (isEditMode()) {
+            profileService.updateProfile(profile)
+        } else {
+            val createdProfile = profileService.createProfile(profile)
+            preferences.saveProfile(createdProfile.id!!)
+
+            logger.d("Created new profile with ID: ${createdProfile.id}")
+        }
+    }
+
     private fun toViewableProfile(profile: Profile?, locations: Locations?, attrs: SingleChoiceAttributes?): ViewableProfile? {
         return if (profile == null || locations == null || attrs == null) null
         else profileAdapter.from(profile, locations, attrs)
@@ -143,8 +154,16 @@ class ProfileViewModel @Inject constructor(
     private fun fromViewableProfile(
         viewableProfile: ViewableProfile?, locations: Locations?, attributes: SingleChoiceAttributes?, currentProfile: Profile?
     ): Profile? {
-        return if (viewableProfile == null || locations == null || attributes == null || currentProfile == null) null
+        return if (viewableProfile == null || locations == null || attributes == null) null
         else profileAdapter.from(viewableProfile, locations, attributes, currentProfile)
+    }
+
+    private fun initializeMode() = when {
+        noExistingProfile() -> {
+            mode = Mode.Create
+            viewableProfile.postValue(ViewableProfile())
+        }
+        else -> mode = Mode.Edit
     }
 
     private fun noExistingProfile() = (preferences.getProfile() == null)
