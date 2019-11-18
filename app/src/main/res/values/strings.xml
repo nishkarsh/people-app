@@ -12,4 +12,5 @@
     <string name="title_marital_status">Choose marital status</string>
 
     <string name="message_loading">Fetching profile details, please wait.</string>
+    <string name="message_storage_permission">Uploading picture needs permission</string>
 </resources>

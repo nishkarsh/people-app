@@ -1,8 +1,11 @@
 package com.intentfilter.people.views.profile.edit
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
-import android.content.Intent.ACTION_PICK
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,9 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+import com.intentfilter.androidpermissions.PermissionManager
+import com.intentfilter.androidpermissions.PermissionManager.PermissionRequestListener
+import com.intentfilter.androidpermissions.models.DeniedPermissions
 import com.intentfilter.people.DaggerPeopleComponent
 import com.intentfilter.people.R
 import com.intentfilter.people.databinding.FragmentEditProfileBinding
@@ -89,9 +95,17 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     }
 
     @OnClick(R.id.profilePicture)
-    fun displayFileChooser() {
-        val chooseImageIntent = Intent(ACTION_PICK).apply { type = "image/*" }
-        startActivityForResult(chooseImageIntent, 0)
+    fun askPermissionsAndChooseFile() {
+        PermissionManager.getInstance(requireContext())
+            .checkPermissions(arrayListOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), object : PermissionRequestListener {
+                override fun onPermissionGranted() {
+                    displayImageChooser()
+                }
+
+                override fun onPermissionDenied(deniedPermissions: DeniedPermissions?) {
+                    notifyPermissionNeeded()
+                }
+            })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,27 +126,27 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
 
     @OnClick(value = [R.id.viewGender, R.id.viewGenderWrapper])
     fun displayGenderOptions() {
-        displayChooser(viewGender, profileViewModel.getGenderOptions(), R.string.title_gender)
+        displayOptionChooser(viewGender, profileViewModel.getGenderOptions(), R.string.title_gender)
     }
 
     @OnClick(value = [R.id.viewEthnicity, R.id.viewEthnicityWrapper])
     fun displayEthnicityOptions() {
-        displayChooser(viewEthnicity, profileViewModel.getEthnicityOptions(), R.string.title_ethnicity)
+        displayOptionChooser(viewEthnicity, profileViewModel.getEthnicityOptions(), R.string.title_ethnicity)
     }
 
     @OnClick(value = [R.id.viewFigureType, R.id.viewFigureTypeWrapper])
     fun displayFigureOptions() {
-        displayChooser(viewFigureType, profileViewModel.getFigureTypeOptions(), R.string.title_figure_type)
+        displayOptionChooser(viewFigureType, profileViewModel.getFigureTypeOptions(), R.string.title_figure_type)
     }
 
     @OnClick(value = [R.id.viewReligion, R.id.viewReligionWrapper])
     fun displayReligionOptions() {
-        displayChooser(viewReligion, profileViewModel.getReligionOptions(), R.string.title_figure_type)
+        displayOptionChooser(viewReligion, profileViewModel.getReligionOptions(), R.string.title_figure_type)
     }
 
     @OnClick(value = [R.id.viewMaritalStatus, R.id.viewMaritalStatusWrapper])
     fun displayMaritalStatusOptions() {
-        displayChooser(viewMaritalStatus, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
+        displayOptionChooser(viewMaritalStatus, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
     }
 
     override fun onDestroyView() {
@@ -140,7 +154,7 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         unbinder.unbind()
     }
 
-    private fun displayChooser(view: EditText, options: Array<NamedAttribute>, @StringRes titleId: Int) {
+    private fun displayOptionChooser(view: EditText, options: Array<NamedAttribute>, @StringRes titleId: Int) {
         // TODO Handle configuration change while reusing the same code
         val chooserFragment = SingleAttributeChooserFragment.newInstance(options, getString(titleId))
         chooserFragment.showNow(childFragmentManager, TAG)
@@ -151,10 +165,27 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         })
     }
 
+    private fun displayImageChooser() {
+        val chooseImageIntent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+        startActivityForResult(chooseImageIntent, 0)
+    }
+
     private fun attachBirthdayChooserObserver() {
         val birthdayChooserViewModel = ViewModelProvider(this).get(DatePickerViewModel::class.java)
         birthdayChooserViewModel.selectedDate.observe(viewLifecycleOwner, Observer {
             viewBirthday.setText(DateUtil.format(it))
         })
+    }
+
+    private fun notifyPermissionNeeded() {
+        val actionListener: (View) -> Unit = {
+            startActivity(Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", requireContext().packageName, null)
+            })
+        }
+
+        Snackbar.make(requireView(), R.string.message_storage_permission, LENGTH_LONG)
+            .setAction(R.string.label_settings, actionListener).show()
     }
 }

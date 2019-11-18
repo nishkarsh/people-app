@@ -11,4 +11,5 @@
     <string name="label_figure">Figure</string>
     <string name="label_height">Height</string>
     <string name="label_retry">Retry</string>
+    <string name="label_settings">Settings</string>
 </resources>
