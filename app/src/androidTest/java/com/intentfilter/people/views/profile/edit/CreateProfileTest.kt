@@ -67,8 +67,8 @@ internal class CreateProfileTest {
             Navigation.setViewNavController(fragment.requireView(), navController)
         }
 
-        onView(withId(R.id.editDisplayName)).perform(typeText(viewableProfile.displayName))
-        onView(withId(R.id.editRealName)).perform(typeText(viewableProfile.actualFullName))
+        onView(withId(R.id.editDisplayName)).perform(typeText(viewableProfile.displayName), closeSoftKeyboard())
+        onView(withId(R.id.editRealName)).perform(typeText(viewableProfile.actualFullName), closeSoftKeyboard())
         onView(withId(R.id.viewBirthday)).perform(click())
 
         onView(withClassName(equalTo(DatePicker::class.java.name))).perform(setDate(1992, 1, 30))
