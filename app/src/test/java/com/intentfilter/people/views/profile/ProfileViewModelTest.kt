@@ -22,8 +22,7 @@ import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.hamcrest.junit.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -276,6 +275,22 @@ internal class ProfileViewModelTest {
 
         assertThat(viewModel.viewableProfile.value?.profilePicturePath, `is`(uri.toString()))
         assertThat(viewModel.selectedProfilePicture, `is`(file))
+    }
+
+    @Test
+    internal fun shouldSetModeToEditWhenProfileExist(@Mock preferences: Preferences, @Random profileId: String) {
+        whenever(preferences.getProfile()).thenReturn(profileId)
+
+        val viewModel = ProfileViewModel(
+            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+        )
+
+        assertTrue(viewModel.isEditMode())
+    }
+
+    @Test
+    internal fun shouldSetModeToCreateWhenProfileDoesNotExist() {
+        assertFalse(viewModel.isEditMode())
     }
 
     @AfterEach

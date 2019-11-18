@@ -12,6 +12,7 @@ import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.utilities.Preferences
+import com.intentfilter.people.views.profile.edit.Mode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -32,9 +33,13 @@ class ProfileViewModel @Inject constructor(
 
     internal var selectedProfilePicture: File? = null
     private val logger = Logger.loggerFor(ProfileViewModel::class)
+    private val mode: Mode
 
     init {
         trySync()
+
+        mode = if (noExistingProfile()) Mode.Create else Mode.Edit
+
         viewableProfile.apply {
             addSource(choiceAttributes) { attributes ->
                 toViewableProfile(profile.value, locations.value, attributes)?.let { viewableProfile.postValue(it) }
@@ -100,6 +105,8 @@ class ProfileViewModel @Inject constructor(
         return restResponse
     }
 
+    fun isEditMode(): Boolean = (mode == Mode.Edit)
+
     fun getGenderOptions(): Array<NamedAttribute> {
         return choiceAttributes.value!!.gender
     }
@@ -139,4 +146,6 @@ class ProfileViewModel @Inject constructor(
         return if (viewableProfile == null || locations == null || attributes == null || currentProfile == null) null
         else profileAdapter.from(viewableProfile, locations, attributes, currentProfile)
     }
+
+    private fun noExistingProfile() = (preferences.getProfile() == null)
 }

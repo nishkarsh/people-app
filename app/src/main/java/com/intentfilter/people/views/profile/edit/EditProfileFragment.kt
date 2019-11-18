@@ -71,6 +71,8 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         DaggerPeopleComponent.factory().newInstance(requireContext()).inject(this)
 
         profileViewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java).apply {
+            binding.isEditMode = isEditMode()
+
             locations.observe(viewLifecycleOwner, Observer {
                 logger.d("Got locations from service, initializing autocomplete")
 
