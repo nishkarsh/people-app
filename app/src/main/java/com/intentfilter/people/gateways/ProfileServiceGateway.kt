@@ -1,5 +1,6 @@
 package com.intentfilter.people.gateways
 
+import com.intentfilter.people.models.FilePath
 import com.intentfilter.people.models.Profile
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -19,5 +20,5 @@ interface ProfileServiceGateway {
 
     @Multipart
     @POST("/profile/picture")
-    suspend fun uploadPicture(@Part picture: MultipartBody.Part): String
+    suspend fun uploadPicture(@Part picture: MultipartBody.Part): FilePath
 }

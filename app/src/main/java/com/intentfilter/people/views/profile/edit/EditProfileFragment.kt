@@ -1,6 +1,7 @@
 package com.intentfilter.people.views.profile.edit
 
 import android.content.Intent
+import android.content.Intent.ACTION_PICK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -25,6 +27,7 @@ import com.intentfilter.people.extensions.observeOnce
 import com.intentfilter.people.models.NamedAttribute
 import com.intentfilter.people.utilities.DateUtil
 import com.intentfilter.people.utilities.Logger
+import com.intentfilter.people.utilities.TempImageFileBuilder
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment
 import com.intentfilter.people.views.common.datepicker.DatePickerDialogFragment.Companion.TAG
 import com.intentfilter.people.views.common.datepicker.DatePickerViewModel
@@ -33,6 +36,8 @@ import com.intentfilter.people.views.common.itemchooser.SingleAttributeChooserVi
 import com.intentfilter.people.views.profile.ProfileViewModel
 import com.intentfilter.people.views.profile.ProfileViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment(), ViewModelStoreOwner {
@@ -85,11 +90,19 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
 
     @OnClick(R.id.profilePicture)
     fun displayFileChooser() {
-        val chooseImageIntent = Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-        }
-
+        val chooseImageIntent = Intent(ACTION_PICK).apply { type = "image/*" }
         startActivityForResult(chooseImageIntent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        logger.d("Received activity result for request code: $requestCode")
+
+        profileViewModel.viewModelScope.launch(Dispatchers.Default) {
+            data?.data?.let { uri ->
+                val imageFile = TempImageFileBuilder.createFile(requireContext(), uri)
+                profileViewModel.setProfilePicture(uri, imageFile)
+            }
+        }
     }
 
     @OnClick(value = [R.id.viewBirthday, R.id.viewBirthdayWrapper])
@@ -120,12 +133,6 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
     @OnClick(value = [R.id.viewMaritalStatus, R.id.viewMaritalStatusWrapper])
     fun displayMaritalStatusOptions() {
         displayChooser(viewMaritalStatus, profileViewModel.getMaritalStatusOptions(), R.string.title_marital_status)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        logger.d(String.format("Received activity result for request code: %s", requestCode))
-
-        profileViewModel.setProfilePicture(data?.data)
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,6 @@
 package com.intentfilter.people.adapters
 
+import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.models.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -10,7 +11,7 @@ open class ViewableProfileAdapter @Inject constructor() {
 
     open fun from(profile: Profile, locations: Locations, choiceAttributes: SingleChoiceAttributes): ViewableProfile {
         return ViewableProfile(
-            profile.displayName, profile.actualFullName, profile.profilePicturePath, formatBirthday(profile.birthday),
+            profile.displayName, profile.actualFullName, completeImageUri(profile), formatBirthday(profile.birthday),
             getAttributeName(profile.genderId, choiceAttributes.gender)!!,
             getAttributeName(profile.ethnicityId, choiceAttributes.ethnicity),
             getAttributeName(profile.religionId, choiceAttributes.religion), profile.height?.toString(),
@@ -22,7 +23,7 @@ open class ViewableProfileAdapter @Inject constructor() {
 
     open fun from(viewable: ViewableProfile, locations: Locations, attrs: SingleChoiceAttributes, current: Profile): Profile? {
         return Profile(
-            current.id, viewable.displayName!!, viewable.actualFullName!!, viewable.profilePicturePath,
+            current.id, viewable.displayName!!, viewable.actualFullName!!, stripPrefix(viewable.profilePicturePath),
             parseBirthday(viewable.birthday!!).toString(), getAttributeId(viewable.gender, attrs.gender).toString(),
             getAttributeId(viewable.ethnicity, attrs.ethnicity).toString(),
             getAttributeId(viewable.religion, attrs.religion).toString(), viewable.height?.toDouble(),
@@ -30,6 +31,12 @@ open class ViewableProfileAdapter @Inject constructor() {
             getAttributeId(viewable.maritalStatus, attrs.maritalStatus).toString(),
             viewable.occupation, viewable.aboutMe, getCityCoordinates(locations, viewable.location!!), current.version
         )
+    }
+
+    private fun completeImageUri(profile: Profile) = BuildConfig.IMAGE_UPLOAD_PATH + profile.profilePicturePath
+
+    private fun stripPrefix(profilePicturePath: String?): String? {
+        return profilePicturePath?.let { profilePicturePath.removePrefix(BuildConfig.IMAGE_UPLOAD_PATH) }
     }
 
     private fun getAttributeId(attributeName: String?, attributes: Array<NamedAttribute>): UUID? {

@@ -15,6 +15,7 @@ import com.intentfilter.people.utilities.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
@@ -29,6 +30,7 @@ class ProfileViewModel @Inject constructor(
     val viewableProfile: MediatorLiveData<ViewableProfile> = MediatorLiveData()
     val profile: MutableLiveData<Profile?> = MutableLiveData()
 
+    internal var selectedProfilePicture: File? = null
     private val logger = Logger.loggerFor(ProfileViewModel::class)
 
     init {
@@ -81,6 +83,11 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(networkCoroutineDispatcher) {
             try {
                 fromViewableProfile(viewableProfile.value, locations.value, choiceAttributes.value, profile.value)?.let {
+                    selectedProfilePicture?.let { selectedDisplayPicture ->
+                        val uploadedPicturePath = profileService.uploadPicture(selectedDisplayPicture)
+                        it.profilePicturePath = uploadedPicturePath.fileName
+                    }
+
                     profileService.updateProfile(it)
                 }
                 restResponse.success.postValue(Unit)
@@ -113,12 +120,12 @@ class ProfileViewModel @Inject constructor(
         return choiceAttributes.value!!.maritalStatus
     }
 
-    fun setProfilePicture(imageUri: Uri?) {
-        imageUri?.let {
-            val current = viewableProfile.value ?: ViewableProfile()
-            current.profilePicturePath = imageUri.toString()
-            viewableProfile.postValue(current)
-        }
+    fun setProfilePicture(imageUri: Uri, imageFile: File) {
+        selectedProfilePicture = imageFile
+
+        val current = viewableProfile.value ?: ViewableProfile()
+        current.profilePicturePath = imageUri.toString()
+        viewableProfile.postValue(current)
     }
 
     private fun toViewableProfile(profile: Profile?, locations: Locations?, attrs: SingleChoiceAttributes?): ViewableProfile? {

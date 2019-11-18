@@ -31,7 +31,7 @@ internal class ViewableProfileAdapterTest {
     internal fun shouldConvertProfileToViewableProfile() {
         val profile = Profile(
             "5dcefdb4bc4ae21008ddbd32", "Nishkarsh", "Nishkarsh Sharma",
-            "https://i.pinimg.com/originals/2a/c4/cb/2ac4cbfec5d66d3c996c521969199e58.jpg", "2000-11-10",
+            "2ac4cbfec5d66d3c996c521969199e58.jpg", "2000-11-10",
             "8f9d76ad-2c6b-4a98-8496-6165a2770a5e", "44d17f32-f0c9-4bd0-801e-fd9b63d54342",
             "9bf8e0ef-11ea-4fe3-bdd4-e6d29fe406cb", 125.0, "ae32676c-4275-4536-a6e0-188100b97148",
             "5a837767-7a11-487c-a243-7451c7b14c03", "Applications Developer",
@@ -41,7 +41,7 @@ internal class ViewableProfileAdapterTest {
         val viewableProfile = ViewableProfile(
             "Nishkarsh",
             "Nishkarsh Sharma",
-            "https://i.pinimg.com/originals/2a/c4/cb/2ac4cbfec5d66d3c996c521969199e58.jpg",
+            "http://10.0.2.2:9740/uploads/2ac4cbfec5d66d3c996c521969199e58.jpg",
             "10 November, 2000",
             "Male",
             "Mixed",
@@ -66,7 +66,7 @@ internal class ViewableProfileAdapterTest {
     internal fun shouldConvertViewableProfileToProfile(@Random currentProfile: Profile) {
         val viewableProfile = ViewableProfile(
             "Nishkarsh", "Nishkarsh Sharma",
-            "https://i.pinimg.com/originals/2a/c4/cb/2ac4cbfec5d66d3c996c521969199e58.jpg", "10 November, 2000",
+            "http://10.0.2.2:9740/uploads/2ac4cbfec5d66d3c996c521969199e58.jpg", "10 November, 2000",
             "Male", "Mixed", "Hindu", "125.0",
             "Athletic", "Never Married", "Applications Developer",
             "I am a cool person. I mean really. I like to try new things and would do anything at least once for the experiene of it.",
@@ -75,7 +75,7 @@ internal class ViewableProfileAdapterTest {
 
         val profile = Profile(
             currentProfile.id, "Nishkarsh", "Nishkarsh Sharma",
-            "https://i.pinimg.com/originals/2a/c4/cb/2ac4cbfec5d66d3c996c521969199e58.jpg", "2000-11-10",
+            "2ac4cbfec5d66d3c996c521969199e58.jpg", "2000-11-10",
             "8f9d76ad-2c6b-4a98-8496-6165a2770a5e", "44d17f32-f0c9-4bd0-801e-fd9b63d54342",
             "9bf8e0ef-11ea-4fe3-bdd4-e6d29fe406cb", 125.0, "ae32676c-4275-4536-a6e0-188100b97148",
             "5a837767-7a11-487c-a243-7451c7b14c03", "Applications Developer",

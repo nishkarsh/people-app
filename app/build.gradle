@@ -32,6 +32,7 @@ android {
             buildConfigField("String", "ATTRIBUTE_SERVICE_BASE_URL", '"http://10.0.2.2:8080"')
             buildConfigField("String", "LOCATION_SERVICE_BASE_URL", '"http://10.0.2.2:8080"')
             buildConfigField("String", "PROFILE_SERVICE_BASE_URL", '"http://10.0.2.2:9740"')
+            buildConfigField("String", "IMAGE_UPLOAD_PATH", '"http://10.0.2.2:9740/uploads/"')
         }
     }
     dataBinding {

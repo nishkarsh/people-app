@@ -1,6 +1,7 @@
 package com.intentfilter.people.services
 
 import com.intentfilter.people.gateways.ProfileServiceGateway
+import com.intentfilter.people.models.FilePath
 import com.intentfilter.people.models.Profile
 import okhttp3.MediaType.parse
 import okhttp3.MultipartBody
@@ -22,7 +23,7 @@ open class ProfileService @Inject constructor(private val gateway: ProfileServic
         gateway.update(profile.id, profile).execute()
     }
 
-    open suspend fun uploadPicture(picture: File): String {
+    open suspend fun uploadPicture(picture: File): FilePath {
         val filePart = MultipartBody.Part.createFormData("file", picture.name, create(parse("image/*"), picture))
         return gateway.uploadPicture(filePart)
     }

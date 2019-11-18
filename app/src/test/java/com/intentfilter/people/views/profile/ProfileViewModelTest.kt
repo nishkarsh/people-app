@@ -4,10 +4,7 @@ import android.net.Uri
 import com.intentfilter.people.adapters.ViewableProfileAdapter
 import com.intentfilter.people.extensions.InstantExecutorExtension
 import com.intentfilter.people.extensions.getOrAwaitValue
-import com.intentfilter.people.models.Locations
-import com.intentfilter.people.models.Profile
-import com.intentfilter.people.models.SingleChoiceAttributes
-import com.intentfilter.people.models.ViewableProfile
+import com.intentfilter.people.models.*
 import com.intentfilter.people.services.AttributeService
 import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
@@ -35,6 +32,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
+import java.io.File
 
 @ExperimentalCoroutinesApi
 @Extensions(
@@ -98,11 +96,14 @@ internal class ProfileViewModelTest {
     @Test
     internal fun shouldSaveProfile(
         @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
-        @Random choiceAttributes: SingleChoiceAttributes
+        @Random choiceAttributes: SingleChoiceAttributes, @Mock profilePicture: File, @Random filePath: FilePath
     ) = runBlockingTest {
         // given
+        viewModel.selectedProfilePicture = profilePicture
+
         whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
         whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(profileService.uploadPicture(profilePicture)).thenReturn(filePath)
         whenever(preferences.getProfile()).thenReturn(current.id)
         whenever(profileService.getProfile(current.id)).thenReturn(current)
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
@@ -117,6 +118,34 @@ internal class ProfileViewModelTest {
         // then
         verify(profileService).updateProfile(profile)
         assertNotNull(restResponse.success.getOrAwaitValue())
+        assertThat(profile.profilePicturePath, `is`(filePath.fileName))
+    }
+
+    @Test
+    internal fun shouldNotOverwritePicturePathWhenFileNotSelectedSaveProfile(
+        @Random viewableProfile: ViewableProfile, @Random profile: Profile, @Random current: Profile, @Random locations: Locations,
+        @Random choiceAttributes: SingleChoiceAttributes, @Random path: String
+    ) = runBlockingTest {
+        // given
+        profile.profilePicturePath = path
+        whenever(attributeService.getAttributes()).thenReturn(choiceAttributes)
+        whenever(locationService.getLocations()).thenReturn(locations)
+        whenever(preferences.getProfile()).thenReturn(current.id)
+        whenever(profileService.getProfile(current.id)).thenReturn(current)
+        whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
+        whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
+
+        viewModel.initiateSync()
+        viewModel.viewableProfile.getOrAwaitValue()
+
+        // when
+        viewModel.saveProfile()
+
+        // then
+        verify(profileService).updateProfile(profile)
+        assertThat(profile.profilePicturePath, `is`(path))
+
+        verifyNoMoreInteractions(profileService)
     }
 
     @Test
@@ -145,32 +174,19 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    fun shouldGetChoiceAttributes(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
-        whenever(attributeService.getAttributes()).thenReturn(attributes)
+    fun shouldGetDetailsOnSync(@Random attributes: SingleChoiceAttributes, @Random locations: Locations, @Random profile: Profile) =
+        runBlockingTest {
+            whenever(attributeService.getAttributes()).thenReturn(attributes)
+            whenever(locationService.getLocations()).thenReturn(locations)
+            whenever(preferences.getProfile()).thenReturn(profile.id)
+            whenever(profileService.getProfile(profile.id)).thenReturn(profile)
 
-        viewModel.initiateSync()
+            viewModel.initiateSync()
 
-        assertThat(viewModel.choiceAttributes.value, `is`(attributes))
-    }
-
-    @Test
-    fun shouldGetLocations(@Random locations: Locations) = runBlockingTest {
-        whenever(locationService.getLocations()).thenReturn(locations)
-
-        viewModel.initiateSync()
-
-        assertThat(viewModel.locations.value, `is`(locations))
-    }
-
-    @Test
-    fun shouldGetProfileWhenProfileIdExistInPreferences(@Random profile: Profile) = runBlockingTest {
-        whenever(preferences.getProfile()).thenReturn(profile.id)
-        whenever(profileService.getProfile(profile.id)).thenReturn(profile)
-
-        viewModel.initiateSync()
-
-        assertThat(viewModel.profile.value, `is`(profile))
-    }
+            assertThat(viewModel.choiceAttributes.value, `is`(attributes))
+            assertThat(viewModel.locations.value, `is`(locations))
+            assertThat(viewModel.profile.value, `is`(profile))
+        }
 
     @Test
     fun shouldNotAttemptGetProfileWhenProfileIdNotPresentInPreferences() = runBlockingTest {
@@ -242,64 +258,24 @@ internal class ProfileViewModelTest {
     }
 
     @Test
-    fun shouldGetGenderOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
+    fun shouldGetOptionsOnSync(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
         whenever(attributeService.getAttributes()).thenReturn(attributes)
 
         viewModel.initiateSync()
 
         assertThat(viewModel.getGenderOptions(), `is`(attributes.gender))
-    }
-
-    @Test
-    fun shouldGetEthnicityOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
-        whenever(attributeService.getAttributes()).thenReturn(attributes)
-
-        viewModel.initiateSync()
-
         assertThat(viewModel.getEthnicityOptions(), `is`(attributes.ethnicity))
-    }
-
-    @Test
-    fun shouldGetFigureTypeOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
-        whenever(attributeService.getAttributes()).thenReturn(attributes)
-
-        viewModel.initiateSync()
-
         assertThat(viewModel.getFigureTypeOptions(), `is`(attributes.figure))
-    }
-
-    @Test
-    fun shouldGetReligionOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
-        whenever(attributeService.getAttributes()).thenReturn(attributes)
-
-        viewModel.initiateSync()
-
         assertThat(viewModel.getReligionOptions(), `is`(attributes.religion))
-    }
-
-    @Test
-    fun shouldGetMaritalStatusOptions(@Random attributes: SingleChoiceAttributes) = runBlockingTest {
-        whenever(attributeService.getAttributes()).thenReturn(attributes)
-
-        viewModel.initiateSync()
-
         assertThat(viewModel.getMaritalStatusOptions(), `is`(attributes.maritalStatus))
     }
 
     @Test
-    internal fun shouldSetProfilePictureWhenUriNotNull(@Mock uri: Uri) {
-        viewModel.setProfilePicture(uri)
+    internal fun shouldSetProfilePictureWhenUriNotNull(@Mock uri: Uri, @Mock file: File) {
+        viewModel.setProfilePicture(uri, file)
 
         assertThat(viewModel.viewableProfile.value?.profilePicturePath, `is`(uri.toString()))
-    }
-
-    @Test
-    internal fun shouldNotSetProfilePictureWhenNullUriReceivedAsParam(@Mock uri: Uri) {
-        viewModel.setProfilePicture(uri)
-
-        viewModel.setProfilePicture(null)
-
-        assertNotNull(viewModel.viewableProfile.value?.profilePicturePath)
+        assertThat(viewModel.selectedProfilePicture, `is`(file))
     }
 
     @AfterEach
