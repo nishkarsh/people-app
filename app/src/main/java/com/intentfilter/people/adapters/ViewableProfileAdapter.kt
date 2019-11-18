@@ -33,7 +33,9 @@ open class ViewableProfileAdapter @Inject constructor() {
         )
     }
 
-    private fun completeImageUri(profile: Profile) = BuildConfig.IMAGE_UPLOAD_PATH + profile.profilePicturePath
+    private fun completeImageUri(profile: Profile): String? {
+        return profile.profilePicturePath?.let { BuildConfig.IMAGE_UPLOAD_PATH + profile.profilePicturePath }
+    }
 
     private fun stripPrefix(profilePicturePath: String?): String? {
         return profilePicturePath?.let { profilePicturePath.removePrefix(BuildConfig.IMAGE_UPLOAD_PATH) }
