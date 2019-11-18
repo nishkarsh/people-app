@@ -5,13 +5,13 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.models.NamedAttribute
 import org.parceler.Parcels
 
-class SingleAttributeChooserFragment : DialogFragment(), DialogInterface.OnClickListener {
+class SingleAttributeChooserFragment : AppCompatDialogFragment(), DialogInterface.OnClickListener {
     private lateinit var viewModel: SingleAttributeChooserViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

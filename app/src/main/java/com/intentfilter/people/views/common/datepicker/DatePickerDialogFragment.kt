@@ -4,12 +4,12 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
-import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import java.util.*
 
-class DatePickerDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerDialogFragment : AppCompatDialogFragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var viewModel: DatePickerViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

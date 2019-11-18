@@ -113,24 +113,24 @@ class ProfileViewModel @Inject constructor(
 
     fun isEditMode(): Boolean = (mode == Mode.Edit)
 
-    fun getGenderOptions(): Array<NamedAttribute> {
-        return choiceAttributes.value!!.gender
+    fun getGenderOptions(): Array<NamedAttribute>? {
+        return choiceAttributes.value?.gender
     }
 
-    fun getEthnicityOptions(): Array<NamedAttribute> {
-        return choiceAttributes.value!!.ethnicity
+    fun getEthnicityOptions(): Array<NamedAttribute>? {
+        return choiceAttributes.value?.ethnicity
     }
 
-    fun getFigureTypeOptions(): Array<NamedAttribute> {
-        return choiceAttributes.value!!.figure
+    fun getFigureTypeOptions(): Array<NamedAttribute>? {
+        return choiceAttributes.value?.figure
     }
 
-    fun getReligionOptions(): Array<NamedAttribute> {
-        return choiceAttributes.value!!.religion
+    fun getReligionOptions(): Array<NamedAttribute>? {
+        return choiceAttributes.value?.religion
     }
 
-    fun getMaritalStatusOptions(): Array<NamedAttribute> {
-        return choiceAttributes.value!!.maritalStatus
+    fun getMaritalStatusOptions(): Array<NamedAttribute>? {
+        return choiceAttributes.value?.maritalStatus
     }
 
     fun setProfilePicture(imageUri: Uri, imageFile: File) {

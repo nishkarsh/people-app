@@ -13,4 +13,5 @@
 
     <string name="message_loading">Fetching profile details, please wait.</string>
     <string name="message_storage_permission">Uploading picture needs permission</string>
+    <string name="not_yet_fetched">The attributes have not been fetched yet. Please try after sometime.</string>
 </resources>

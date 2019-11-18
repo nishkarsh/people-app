@@ -161,7 +161,12 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
         unbinder.unbind()
     }
 
-    private fun displayOptionChooser(view: EditText, options: Array<NamedAttribute>, @StringRes titleId: Int) {
+    private fun displayOptionChooser(view: EditText, options: Array<NamedAttribute>?, @StringRes titleId: Int) {
+        if (options.isNullOrEmpty()) {
+            Snackbar.make(requireView(), R.string.not_yet_fetched, LENGTH_LONG).show()
+            return
+        }
+
         // TODO Handle configuration change while reusing the same code
         val chooserFragment = SingleAttributeChooserFragment.newInstance(options, getString(titleId))
         chooserFragment.showNow(childFragmentManager, TAG)
