@@ -8,6 +8,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.intentfilter.people.BuildConfig
+import com.intentfilter.people.R
 import com.intentfilter.people.models.NamedAttribute
 import org.parceler.Parcels
 
@@ -24,7 +25,7 @@ class SingleAttributeChooserFragment : AppCompatDialogFragment(), DialogInterfac
 
         val itemsAdapter = ChoiceItemsAdapter(context!!, android.R.layout.simple_list_item_1, namedAttributes)
 
-        return AlertDialog.Builder(context).setTitle(title)
+        return AlertDialog.Builder(context, R.style.PeopleTheme).setTitle(title)
             .setSingleChoiceItems(itemsAdapter, -1, this)
             .create()
     }
