@@ -4,13 +4,13 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.intentfilter.people.R
 import java.util.*
 
-class DatePickerDialogFragment : AppCompatDialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var viewModel: DatePickerViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -21,7 +21,7 @@ class DatePickerDialogFragment : AppCompatDialogFragment(), DatePickerDialog.OnD
 
         viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(DatePickerViewModel::class.java)
 
-        return DatePickerDialog(requireContext(), R.style.PeopleTheme, this, year, month, day)
+        return DatePickerDialog(requireContext(), R.style.PeopleTheme_Dialog, this, year, month, day)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

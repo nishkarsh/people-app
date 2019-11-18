@@ -5,14 +5,14 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.intentfilter.people.BuildConfig
 import com.intentfilter.people.R
 import com.intentfilter.people.models.NamedAttribute
 import org.parceler.Parcels
 
-class SingleAttributeChooserFragment : AppCompatDialogFragment(), DialogInterface.OnClickListener {
+class SingleAttributeChooserFragment : DialogFragment(), DialogInterface.OnClickListener {
     private lateinit var viewModel: SingleAttributeChooserViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -25,7 +25,7 @@ class SingleAttributeChooserFragment : AppCompatDialogFragment(), DialogInterfac
 
         val itemsAdapter = ChoiceItemsAdapter(context!!, android.R.layout.simple_list_item_1, namedAttributes)
 
-        return AlertDialog.Builder(context, R.style.PeopleTheme).setTitle(title)
+        return AlertDialog.Builder(context, R.style.PeopleTheme_Dialog).setTitle(title)
             .setSingleChoiceItems(itemsAdapter, -1, this)
             .create()
     }
