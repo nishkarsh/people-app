@@ -25,7 +25,7 @@ object ProfileBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("validationError")
+    @BindingAdapter("validateAgainst")
     fun setError(view: TextInputLayout, errors: ValidationResult?) {
         errors?.get(view.id)?.let { errorResId ->
             view.error = view.context.getString(errorResId)

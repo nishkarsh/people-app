@@ -20,7 +20,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import butterknife.ButterKnife
 import butterknife.OnClick
-import butterknife.OnTextChanged
 import butterknife.Unbinder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG

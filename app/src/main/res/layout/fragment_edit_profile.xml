@@ -47,7 +47,7 @@
                 app:counterMaxLength="256"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 app:counterMaxLength="256"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewBirthday"
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewGender"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <AutoCompleteTextView
                     android:id="@+id/viewLocation"
@@ -210,7 +210,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:required="@{true}"
-                app:validationError="@{errors}">
+                app:validateAgainst="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewMaritalStatus"
