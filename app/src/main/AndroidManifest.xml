@@ -20,7 +20,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
-        <activity android:name=".views.HomeActivity">
+        <activity
+            android:name=".views.HomeActivity"
+            android:theme="@style/PeopleTheme"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
