@@ -10,6 +10,10 @@
             type="com.intentfilter.people.models.ViewableProfile" />
 
         <variable
+            name="errors"
+            type="com.intentfilter.people.validators.ValidationResult" />
+
+        <variable
             name="isEditMode"
             type="Boolean" />
     </data>
@@ -35,33 +39,41 @@
                 app:roundImageUrl="@{profile.profilePicturePath}" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputDisplayName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standard_margin"
                 app:counterEnabled="true"
                 app:counterMaxLength="256"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_display_name"
+                    android:inputType="textPersonName"
                     android:singleLine="true"
                     android:text="@={profile.displayName}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputActualFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:counterEnabled="true"
                 app:counterMaxLength="256"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_real_name"
+                    android:inputType="textPersonName"
                     android:singleLine="true"
                     android:text="@={profile.actualFullName}" />
 
@@ -71,7 +83,9 @@
                 android:id="@+id/viewBirthdayWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewBirthday"
@@ -88,7 +102,9 @@
                 android:id="@+id/viewGenderWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewGender"
@@ -104,7 +120,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <AutoCompleteTextView
                     android:id="@+id/viewLocation"
@@ -190,7 +208,9 @@
                 android:id="@+id/viewMaritalStatusWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:required="@{true}"
+                app:validationError="@{errors}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/viewMaritalStatus"

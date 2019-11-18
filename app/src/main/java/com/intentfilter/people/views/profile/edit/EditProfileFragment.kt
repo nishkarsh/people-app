@@ -20,6 +20,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import butterknife.ButterKnife
 import butterknife.OnClick
+import butterknife.OnTextChanged
 import butterknife.Unbinder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
@@ -88,11 +89,16 @@ class EditProfileFragment : Fragment(), ViewModelStoreOwner {
 
     @OnClick(R.id.buttonSave)
     fun saveProfile() {
-        profileViewModel.saveProfile().apply {
-            success.observe(viewLifecycleOwner,
-                Observer { findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment) })
-            error.observe(viewLifecycleOwner,
-                Observer { Snackbar.make(requireView(), R.string.profile_update_error, LENGTH_LONG).show() })
+        val errors = profileViewModel.validateProfile()
+        binding.errors = errors
+
+        if (errors.none()) {
+            profileViewModel.saveProfile().apply {
+                success.observe(viewLifecycleOwner,
+                    Observer { findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment) })
+                error.observe(viewLifecycleOwner,
+                    Observer { Snackbar.make(requireView(), R.string.profile_update_error, LENGTH_LONG).show() })
+            }
         }
     }
 

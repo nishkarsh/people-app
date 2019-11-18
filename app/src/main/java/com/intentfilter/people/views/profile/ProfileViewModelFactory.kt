@@ -7,18 +7,19 @@ import com.intentfilter.people.services.AttributeService
 import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
 import com.intentfilter.people.utilities.Preferences
+import com.intentfilter.people.validators.ProfileFormValidator
 import javax.inject.Inject
 
 class ProfileViewModelFactory @Inject constructor(
     private val attributeService: AttributeService, private val locationService: LocationService,
-    private val profileService: ProfileService, private val preferences: Preferences,
+    private val profileService: ProfileService, private val preferences: Preferences, private val validator: ProfileFormValidator,
     private val viewableProfileAdapter: ViewableProfileAdapter
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(
-                attributeService, locationService, profileService, preferences, viewableProfileAdapter
+                attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter
             ) as T
         } else throw IllegalArgumentException()
     }

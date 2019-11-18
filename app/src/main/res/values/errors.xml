@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile_update_error">Your profile could not be saved. Please retry.</string>
+    <string name="error_required">This is a mandatory field</string>
 </resources>

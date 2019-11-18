@@ -12,6 +12,8 @@ import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
 import com.intentfilter.people.utilities.Logger
 import com.intentfilter.people.utilities.Preferences
+import com.intentfilter.people.validators.ProfileFormValidator
+import com.intentfilter.people.validators.ValidationResult
 import com.intentfilter.people.views.profile.edit.Mode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,7 +23,7 @@ import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val attributeService: AttributeService, private val locationService: LocationService,
-    private val profileService: ProfileService, private val preferences: Preferences,
+    private val profileService: ProfileService, private val preferences: Preferences, private val validator: ProfileFormValidator,
     private val profileAdapter: ViewableProfileAdapter, private val networkCoroutineDispatcher: CoroutineDispatcher = IO
 ) : ViewModel() {
 
@@ -79,6 +81,10 @@ class ProfileViewModel @Inject constructor(
     fun trySync() {
         val syncResponse = initiateSync()
         error.addSource(syncResponse.error) { error.postValue(it) }
+    }
+
+    fun validateProfile(): ValidationResult {
+        return validator.validateFields(viewableProfile.value!!)
     }
 
     fun saveProfile(): RestResponse<Unit> {

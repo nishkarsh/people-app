@@ -9,6 +9,8 @@ import com.intentfilter.people.services.AttributeService
 import com.intentfilter.people.services.LocationService
 import com.intentfilter.people.services.ProfileService
 import com.intentfilter.people.utilities.Preferences
+import com.intentfilter.people.validators.ProfileFormValidator
+import com.intentfilter.people.validators.ValidationResult
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.glytching.junit.extension.random.Random
 import io.github.glytching.junit.extension.random.RandomBeansExtension
@@ -49,6 +51,8 @@ internal class ProfileViewModelTest {
     @Mock
     lateinit var preferences: Preferences
     @Mock
+    lateinit var validator: ProfileFormValidator
+    @Mock
     lateinit var viewableProfileAdapter: ViewableProfileAdapter
 
     private lateinit var coroutineDispatcher: TestCoroutineDispatcher
@@ -60,7 +64,7 @@ internal class ProfileViewModelTest {
         Dispatchers.setMain(coroutineDispatcher)
 
         viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
     }
 
@@ -74,7 +78,7 @@ internal class ProfileViewModelTest {
         whenever(profileService.getProfile(profile.id!!)).thenReturn(profile)
 
         val viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
 
         assertThat(viewModel.choiceAttributes.value, `is`(attributes))
@@ -131,7 +135,7 @@ internal class ProfileViewModelTest {
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
         viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
 
         viewModel.selectedProfilePicture = profilePicture
@@ -161,7 +165,7 @@ internal class ProfileViewModelTest {
         whenever(viewableProfileAdapter.from(current, locations, choiceAttributes)).thenReturn(viewableProfile)
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
         viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
 
         viewModel.initiateSync()
@@ -191,7 +195,7 @@ internal class ProfileViewModelTest {
         whenever(viewableProfileAdapter.from(viewableProfile, locations, choiceAttributes, current)).thenReturn(profile)
         whenever(profileService.updateProfile(profile)).thenThrow(RuntimeException())
         viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
 
         viewModel.initiateSync()
@@ -306,10 +310,19 @@ internal class ProfileViewModelTest {
         whenever(preferences.getProfile()).thenReturn(profileId)
 
         val viewModel = ProfileViewModel(
-            attributeService, locationService, profileService, preferences, viewableProfileAdapter, coroutineDispatcher
+            attributeService, locationService, profileService, preferences, validator, viewableProfileAdapter, coroutineDispatcher
         )
 
         assertTrue(viewModel.isEditMode())
+    }
+
+    @Test
+    internal fun shouldValidate(@Random validationResult: ValidationResult) {
+        whenever(validator.validateFields(viewModel.viewableProfile.value!!)).thenReturn(validationResult)
+
+        val result = viewModel.validateProfile()
+
+        assertThat(result, `is`(validationResult))
     }
 
     @Test
