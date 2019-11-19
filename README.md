@@ -1,4 +1,4 @@
-# people-app
+# people-app [![Build Status](https://travis-ci.org/nishkarsh/people-app.svg?branch=master)](https://travis-ci.org/nishkarsh/people-app)
 This is a sample android application with a purpose of demonstrating a sample profile page that is editable.
 
 ## Building the Project
@@ -13,7 +13,7 @@ You would need an android emulator to test this application. The DEV build varia
 
 ***Please also make sure that the animations are disabled on the emulator while running the tests***
 
-Note: This app needs `Profile Service`[https://github.com/nishkarsh/profile-service] to be up and running on local. When this service is up, it listens for connections on port 9740.
+Note: This app needs [`Profile Service`](https://github.com/nishkarsh/profile-service) to be up and running on local. When this service is up, it listens for connections on port 9740.
 
 ### Functionalities
 - First time user lands on the EditProfileFragment in Create mode.
@@ -54,3 +54,5 @@ Note: The app also has a dependency on `com.intentfilter:android-permissions:2.0
 - The location autocomplete is not validated for the input value other than the possible choice from within the list. If an invalid value is kept, the generic error shows up when user attempts to create/edit profile.
 - The code could be refactored at places. If I have to, the first thing that I would do is split the ProfileViewModel into two.
 - The configuration change retains the values for all the fields except for when the `SingleAttributeChooserFragment` is open and then the screen is rotated. There is a possiblity to handle this scenario, right now it was compromised because of the possiblity to reuse code.
+
+Lastly, the focus has been paid on both Android and Server Side. Logic on both the platforms has been tested to a good extent along with other best practices recommended by different sources.
