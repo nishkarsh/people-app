@@ -17,7 +17,7 @@ Note: This app needs [`Profile Service`](https://github.com/nishkarsh/profile-se
 
 ### Functionalities
 - First time user lands on the EditProfileFragment in Create mode.
-- Profile picture could be selected along with entry of information in other fields.
+- Profile picture could be selected along with entry of information in other fields. (Tested with jpg files)
 - The dynamic storage permission is handled for selecting picture.
 - The validation for required fields is handled. It kicks in when the user taps on Create/Save profile. The state is cleared on changing the values.
 - The information is retained across orientation change.
