@@ -1,5 +1,6 @@
 package com.intentfilter.people.views.profile.edit
 
+import android.content.Context.MODE_PRIVATE
 import android.widget.Button
 import android.widget.DatePicker
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -43,8 +44,7 @@ internal class CreateProfileTest {
 
     @Before
     fun setUp() {
-        InstrumentationRegistry.getInstrumentation().targetContext.deleteSharedPreferences("intentfilter")
-
+        clearSharedPreferences()
         viewableProfile = ViewableProfile(
             "Nishkarsh", "Nishkarsh Sharma", null,
             "10 November, 2000", "Male", "Mixed", "Hindu", "125.0",
@@ -107,9 +107,15 @@ internal class CreateProfileTest {
         verify(navController).navigate(R.id.action_editProfileFragment_to_profileFragment)
     }
 
+    internal fun clearSharedPreferences() {
+        InstrumentationRegistry.getInstrumentation().targetContext
+            .getSharedPreferences("intentfilter", MODE_PRIVATE).edit().clear().commit()
+    }
+
     @After
     @Throws(Exception::class)
     fun tearDown() {
+        clearSharedPreferences()
         webServer.shutdown()
     }
 }
