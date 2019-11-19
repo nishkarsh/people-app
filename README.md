@@ -7,9 +7,9 @@ You would need an android emulator to test this application. The DEV build varia
 
 - Build: `./gradlew build`
 - Unit Test: `./gradlew test`
-- Android Instrumentation Test: `./gradlew connectedAndroidTest` [Emulator needs to be up]
+- Android Instrumentation Test: `./gradlew connectedQADebugAndroidTest` [Emulator needs to be up]
 
-***Please make sure to use QA build variant while running instrumentation tests. The URLs in QA product flavour points to a stub MockWebServer.***
+***Please make sure to use QA build variant while running instrumentation tests if run from Android Studio. The URLs in QA product flavour points to a stub MockWebServer.***
 
 ***Please also make sure that the animations are disabled on the emulator while running the tests***
 
